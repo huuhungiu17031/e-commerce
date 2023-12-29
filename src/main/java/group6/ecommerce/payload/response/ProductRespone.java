@@ -1,12 +1,7 @@
 package group6.ecommerce.payload.response;
-
-import group6.ecommerce.model.Category;
 import group6.ecommerce.model.Product;
-import group6.ecommerce.model.ProductDetails;
-import group6.ecommerce.model.Type;
-import jakarta.persistence.*;
 import lombok.Getter;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,6 +17,8 @@ public class ProductRespone {
     private String type;
     private String description;
 
+    private List<ProductDetailsRespone> productDetails;
+
     public ProductRespone(Product p) {
         this.id = p.getId();
         this.name =p.getName();
@@ -32,5 +29,8 @@ public class ProductRespone {
         this.imageUrls = p.getImageUrls();
         this.type = p.getType().getTypeName();
         this.description = p.getDescription();
+        List<ProductDetailsRespone> listProductDetails = new ArrayList<>();
+        p.getListProductDetails().stream().forEach(e -> listProductDetails.add(new ProductDetailsRespone(e)));
+        this.productDetails = listProductDetails;
     }
 }

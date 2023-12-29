@@ -27,4 +27,9 @@ public class ProductServiceImpls implements ProductService {
     public Page<Product> findAllQuantityLarger0(Pageable pageAble) {
         return productRepository.findAllQuantityLarger0(pageAble);
     }
+
+    @Override
+    public int addNewProduct(Product product) {
+        return productRepository.saveAndFlush(product).getId();
+    }
 }

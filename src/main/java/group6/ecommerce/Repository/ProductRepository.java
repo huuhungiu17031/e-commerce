@@ -14,4 +14,6 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
             "group by product_details.product_id, product_details.quantity\n" +
             "having product_details.quantity > 0)", nativeQuery = true)
     Page<Product> findAllQuantityLarger0 (Pageable pageAble);
+
+    public Product saveAndFlush(Product product);
 }

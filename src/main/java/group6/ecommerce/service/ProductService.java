@@ -10,4 +10,6 @@ public interface ProductService {
     Page<Product> findByPage (Pageable pages);
 
     Page<Product> findAllQuantityLarger0 (Pageable pageAble);
+
+    int addNewProduct(Product product);
 }

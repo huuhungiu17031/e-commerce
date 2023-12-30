@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping ("/api/user/cart/")
+@RequestMapping ("/api/user/cart")
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
     private final ProductDetailsService productDetailsService;
-    @PostMapping ("addtocart")
+    @PostMapping ("/addtocart")
     public ResponseEntity<String> addToCart (@RequestBody CartDetailsRequest cartDetailsRequest){
         Users userLogin = new Users();
         Cart_Details item = cartDetailsRequest.getCartDetails();
@@ -31,7 +31,7 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(staus);
         }
     }
-    @PostMapping ("removetocart")
+    @PostMapping ("/removetocart")
     ResponseEntity<String> removeToCart (@RequestBody CartDetailsRequest cartDetailsRequest){
         Users userLogin = new Users();
         cartService.removeToCart(cartDetailsRequest.getCartDetails(),userLogin.getId());

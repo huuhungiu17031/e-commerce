@@ -22,28 +22,28 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping ("/api/")
+@RequestMapping ("/api")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
     private final TypeService typeService;
     private final CategoryService categoryService;
-    @GetMapping ("user/product/{page}")
+    @GetMapping ("/user/product/{page}")
     public ResponseEntity<PageProductRespone> findByPage (@PathVariable(value = "page")Optional<Integer> p){
         Pageable page = PageRequest.of(p.orElse(0),12);
         Page<Product> pageRespone = productService.findAllQuantityLarger0(page);
         return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
     }
 
-    @GetMapping ("user/product/details/{id}")
+    @GetMapping ("/user/product/details/{id}")
     public ResponseEntity<ProductRespone> DetailsProduct (@PathVariable("id")Optional<Integer> id){
         Product Product = productService.findById(id.get());
         ProductRespone productRespone = new ProductRespone(Product);
         return ResponseEntity.status(HttpStatus.OK).body(productRespone);
     }
 
-    @PostMapping("admin/product/add")
+    @PostMapping("/admin/product/add")
     public ResponseEntity<String> addProduct(@RequestBody ProductRequest productRequest){
         // Get type object in DB
         Type type = typeService.getTypeById(productRequest.getTypeName());

@@ -32,4 +32,9 @@ public class ProductServiceImpls implements ProductService {
     public int addNewProduct(Product product) {
         return productRepository.saveAndFlush(product).getId();
     }
+
+    @Override
+    public Page<Product> findByCategoryNameQuantityLarger0(String categoryName, Pageable pageAble) {
+        return productRepository.findByCategoryNameQuantityLarger0(categoryName,pageAble);
+    }
 }

@@ -1,7 +1,6 @@
 package group6.ecommerce.payload.request;
 
-import group6.ecommerce.model.Category;
-import group6.ecommerce.model.Type;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

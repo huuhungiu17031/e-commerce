@@ -3,7 +3,7 @@ package group6.ecommerce.payload.response;
 import group6.ecommerce.model.Product;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 
 import java.util.ArrayList;
 import java.util.List;

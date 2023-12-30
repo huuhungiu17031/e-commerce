@@ -2,7 +2,6 @@ package group6.ecommerce.controller;
 
 import group6.ecommerce.model.Category;
 import group6.ecommerce.model.Product;
-import group6.ecommerce.model.ProductDetails;
 import group6.ecommerce.model.Type;
 import group6.ecommerce.payload.request.ProductRequest;
 import group6.ecommerce.payload.response.PageProductRespone;

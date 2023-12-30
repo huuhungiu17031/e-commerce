@@ -1,10 +1,7 @@
 package group6.ecommerce.payload.response;
 
-import group6.ecommerce.model.Color;
-import group6.ecommerce.model.Product;
+
 import group6.ecommerce.model.ProductDetails;
-import group6.ecommerce.model.Size;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

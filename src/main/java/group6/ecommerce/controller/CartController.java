@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping ("cart")
+@RequestMapping ("/api/user/cart/")
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
@@ -31,7 +31,8 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(staus);
         }
     }
-    @PostMapping ResponseEntity<String> removeToCart (@RequestBody CartDetailsRequest cartDetailsRequest){
+    @PostMapping ("removetocart")
+    ResponseEntity<String> removeToCart (@RequestBody CartDetailsRequest cartDetailsRequest){
         Users userLogin = new Users();
         cartService.removeToCart(cartDetailsRequest.getCartDetails(),userLogin.getId());
         return ResponseEntity.status(HttpStatus.OK).body("Xóa Giỏ Hàng Thành Công");

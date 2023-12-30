@@ -2,11 +2,8 @@ package group6.ecommerce.payload.request;
 
 import group6.ecommerce.model.Cart;
 import group6.ecommerce.model.Cart_Details;
-import group6.ecommerce.model.Product;
 import group6.ecommerce.service.ProductService;
 import group6.ecommerce.service.UserService;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 

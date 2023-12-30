@@ -12,4 +12,6 @@ public interface ProductService {
     Page<Product> findAllQuantityLarger0 (Pageable pageAble);
 
     int addNewProduct(Product product);
+
+    Page<Product> findByCategoryNameQuantityLarger0 (String categoryName,Pageable pageAble);
 }

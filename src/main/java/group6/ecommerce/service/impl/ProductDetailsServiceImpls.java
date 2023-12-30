@@ -14,4 +14,9 @@ public class ProductDetailsServiceImpls implements ProductDetailsService {
     public ProductDetails findProductDetailsByProductIdAndColornameAndSizename(int productId, String colorName, String sizeName) {
         return productDetailsRepository.findProductDetailsByProductIdAndColornameAndSizename(productId,colorName,sizeName);
     }
+
+    @Override
+    public ProductDetails addNewProductDetail(ProductDetails productDetails) {
+        return productDetailsRepository.saveAndFlush(productDetails);
+    }
 }

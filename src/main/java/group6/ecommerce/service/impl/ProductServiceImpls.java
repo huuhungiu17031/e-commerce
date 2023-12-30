@@ -29,7 +29,7 @@ public class ProductServiceImpls implements ProductService {
     }
 
     @Override
-    public int addNewProduct(Product product) {
-        return productRepository.saveAndFlush(product).getId();
+    public Product addNewProduct(Product product) {
+        return productRepository.saveAndFlush(product);
     }
 }

@@ -12,4 +12,6 @@ public interface ProductDetailsRepository extends JpaRepository<ProductDetails,I
             "join size on p.product_id = size.size_id\n" +
             "Where product_id = ?1 and colors.color_name = ?2 and size.size_name = ?3", nativeQuery = true)
     public ProductDetails findProductDetailsByProductIdAndColornameAndSizename (int productId, String colorName, String sizeName);
+
+    ProductDetails saveAndFlush(ProductDetails productDetails);
 }

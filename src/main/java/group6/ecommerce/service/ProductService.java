@@ -11,5 +11,5 @@ public interface ProductService {
 
     Page<Product> findAllQuantityLarger0 (Pageable pageAble);
 
-    int addNewProduct(Product product);
+    Product addNewProduct(Product product);
 }

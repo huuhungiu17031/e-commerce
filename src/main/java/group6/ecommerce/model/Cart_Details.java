@@ -3,6 +3,7 @@ package group6.ecommerce.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -10,6 +11,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class Cart_Details {
     @Id
     @Column (name = "CartDetailsId")
@@ -27,4 +29,12 @@ public class Cart_Details {
     @ManyToOne
     @JoinColumn (name = "ProductId")
     Product product;
+
+    public Cart_Details(int amount, String size, String color, Cart itemCart, Product product) {
+        this.amount = amount;
+        this.size = size;
+        Color = color;
+        ItemCart = itemCart;
+        this.product = product;
+    }
 }

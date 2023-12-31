@@ -33,7 +33,7 @@ public class ProductController {
     public ResponseEntity<PageProductRespone> findByPage (@PathVariable(value = "page")Optional<Integer> p,
                                                           @RequestParam (value = "sort", defaultValue = "")String sort,
                                                           @RequestParam (value = "category", defaultValue = "")String cateogory){
-        if (cateogory.equalsIgnoreCase("")){
+        if (cateogory.equalsIgnoreCase("") || categoryService.findCategoryByName(cateogory)==null){
         if (sort.equalsIgnoreCase("nameaz")){
             Pageable page = PageRequest.of(p.orElse(0),12, Sort.by("product_name").ascending());
             Page<Product> pageRespone = productService.findAllQuantityLarger0(page);

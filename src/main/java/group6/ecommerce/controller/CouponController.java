@@ -18,7 +18,6 @@ public class CouponController {
     @PostMapping("/add")
     public ResponseEntity<String> addCoupon(@RequestBody CouponRequest couponRequest){
         Coupon coupon = new Coupon();
-
         coupon.setCode(couponRequest.getCode());
         coupon.setDiscount(couponRequest.getDiscount());
         if(couponService.addCoupon(coupon)){

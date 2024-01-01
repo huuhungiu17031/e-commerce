@@ -72,4 +72,9 @@ public class UserServiceImpl implements UserService {
         return optionalUser.get();
     }
 
+    @Override
+    public Users findById(int id) {
+        return userRepository.findById(id).get();
+    }
+
 }

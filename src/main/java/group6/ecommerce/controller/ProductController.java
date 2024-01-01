@@ -4,6 +4,7 @@ import group6.ecommerce.model.Category;
 import group6.ecommerce.model.Product;
 import group6.ecommerce.model.Type;
 import group6.ecommerce.payload.request.ProductRequest;
+import group6.ecommerce.payload.response.HttpResponse;
 import group6.ecommerce.payload.response.PageProductRespone;
 import group6.ecommerce.payload.response.ProductRespone;
 import group6.ecommerce.service.CategoryService;
@@ -29,36 +30,19 @@ public class ProductController {
     private final ProductService productService;
     private final TypeService typeService;
     private final CategoryService categoryService;
-    @GetMapping ("/user/product/{page}")
-    public ResponseEntity<PageProductRespone> findByPage (@PathVariable(value = "page")Optional<Integer> p,
-                                                          @RequestParam (value = "sort", defaultValue = "")String sort,
-                                                          @RequestParam (value = "category", defaultValue = "")String cateogory){
-        Pageable page = null;
-        Page<Product> pageRespone = null;
-        switch (sort){
-            case "nameaz":
-                page = PageRequest.of(p.orElse(0),12, Sort.by("product_name").ascending());
-                break;
-            case "nameza":
-                page = PageRequest.of(p.orElse(0),12, Sort.by("product_name").descending());
-                break;
-            case "pricelowtohight":
-                page = PageRequest.of(p.orElse(0),12, Sort.by("product_price").ascending());
-                break;
-            case "pricehighttolow":
-                page = PageRequest.of(p.orElse(0),12, Sort.by("product_price").descending());
-                break;
-            default:
-                page = PageRequest.of(p.orElse(0),12);
-                break;
-        }
-        if (cateogory.equalsIgnoreCase("")) {
-            pageRespone = productService.findAllQuantityLarger0(page);
-        }else {
-            pageRespone = productService.findByCategoryNameQuantityLarger0(cateogory,page);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
-
+    @GetMapping("user/product")
+    public ResponseEntity<HttpResponse> getProduct(
+            @RequestParam(required = false, defaultValue = "12", value = "pageSize") Integer pageSize,
+            @RequestParam(required = false, defaultValue = "0", value = "pageNum") Integer pageNum,
+            @RequestParam(required = false, defaultValue = "id", value = "fields") String fields,
+            @RequestParam(required = false, defaultValue = "asc", value = "orderBy") String orderBy,
+            @RequestParam(required = false, defaultValue = "false", value = "getAll") Boolean getAll,
+            @RequestParam(required = false, value = "categoryId") Integer categoryId) {
+        HttpResponse httpResponse = new HttpResponse(
+                HttpStatus.OK.value(),
+                null,
+                productService.listProduct(pageSize, pageNum, fields, orderBy, getAll, categoryId));
+        return ResponseEntity.status(HttpStatus.OK).body(httpResponse);
     }
 
     @GetMapping ("/user/product/details/{id}")

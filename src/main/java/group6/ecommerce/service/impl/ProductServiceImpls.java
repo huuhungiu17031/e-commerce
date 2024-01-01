@@ -28,20 +28,12 @@ public class ProductServiceImpls implements ProductService {
         return productRepository.findAll(pages);
     }
 
-    @Override
-    public Page<Product> findAllQuantityLarger0(Pageable pageAble) {
-        return productRepository.findAllQuantityLarger0(pageAble);
-    }
 
     @Override
     public int addNewProduct(Product product) {
         return productRepository.saveAndFlush(product).getId();
     }
 
-    @Override
-    public Page<Product> findByCategoryNameQuantityLarger0(String categoryName, Pageable pageAble) {
-        return productRepository.findByCategoryNameQuantityLarger0(categoryName, pageAble);
-    }
 
     @Override
     public PaginationResponse listProduct(

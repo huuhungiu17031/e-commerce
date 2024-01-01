@@ -10,14 +10,25 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Integer> {
+    @Query (value = "select * from product \n" +
+            "where product_id in (select distinct product_details.product_id from product_details\n" +
+            "group by product_details.product_id, product_details.quantity\n" +
+            "having product_details.quantity > 0)", nativeQuery = true)
+    Page<Product> findAllQuantityLarger0 (Pageable pageAble);
+
     public Product saveAndFlush(Product product);
 
     @Query (value = "select * from product \n" +
             "where product_id in (select distinct product_id \n" +
-            "from product \n" +
-            "where (?1 IS NULL or product.category_id = ?1)) and product_id in ((select distinct product_details.product_id \n" +
+            "from product join category on product.category_id = category.category_id \n" +
+            "where category_name = ?1) and product_id in ((select distinct product_details.product_id \n" +
             "from product_details \n" +
             "group by product_details.product_id, product_details.quantity\n" +
             "having product_details.quantity > 0))\n", nativeQuery = true)
-    Page<Product> findByCategoryAndSort(Integer categoryId, Pageable pageable);
+    Page<Product> findByCategoryNameQuantityLarger0 (String categoryName,Pageable pageAble);
+
+
+
+    @Query("SELECT p FROM Product p WHERE (:categoryId IS NULL OR p.category.id = :categoryId)")
+    Page<Product> findByCategoryAndSort(@Param("categoryId") Integer categoryId, Pageable pageable);
 }

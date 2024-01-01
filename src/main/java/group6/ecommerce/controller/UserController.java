@@ -11,8 +11,6 @@ import group6.ecommerce.payload.response.JwtResponse;
 import group6.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/auth/")
 @RequiredArgsConstructor

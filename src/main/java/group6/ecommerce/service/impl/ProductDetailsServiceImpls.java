@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class ProductDetailsServiceImpls implements ProductDetailsService {
     private final ProductDetailsRepository productDetailsRepository;
     @Override
-    public ProductDetails findProductDetailsByProductIdAndColornameAndSizename(int productId, String colorName, String sizeName) {
-        return productDetailsRepository.findProductDetailsByProductIdAndColornameAndSizename(productId,colorName,sizeName);
+    public ProductDetails findProductDetailsByProductIdAndColornameAndSizename(int productId, String colorId, String sizeId) {
+        return productDetailsRepository.findProductDetailsByProductIdAndColornameAndSizename(productId,colorId,sizeId);
     }
 }

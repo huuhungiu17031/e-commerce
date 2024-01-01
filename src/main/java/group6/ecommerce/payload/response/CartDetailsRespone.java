@@ -11,6 +11,7 @@ public class CartDetailsRespone {
     private String size;
     private String Color;
     private ProductRespone product;
+    private String key;
 
     public CartDetailsRespone(Cart_Details item) {
         this.id = item.getId();
@@ -18,5 +19,6 @@ public class CartDetailsRespone {
         this.size = item.getSize();
         this.Color = item.getColor();
         this.product = new ProductRespone(item.getProduct());
+        this.key = item.getProduct().getId()+item.getSize()+item.getColor();
     }
 }

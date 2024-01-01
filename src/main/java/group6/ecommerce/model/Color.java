@@ -16,5 +16,5 @@ public class Color {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private int id;
     @Column (name = "ColorName")
-    private String name;
+    private String colorName;
 }

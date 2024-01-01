@@ -30,10 +30,10 @@ public class Cart_Details {
     @JoinColumn (name = "ProductId")
     Product product;
 
-    public Cart_Details(int amount, String size, String color, Cart itemCart, Product product) {
+    public Cart_Details(int amount, String size, String Color, Cart itemCart, Product product) {
         this.amount = amount;
         this.size = size;
-        Color = color;
+        this.Color = Color;
         ItemCart = itemCart;
         this.product = product;
     }

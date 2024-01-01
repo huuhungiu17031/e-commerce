@@ -112,6 +112,7 @@ public class ProductController {
         productService.addNewProduct(product);
         return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
+
     @GetMapping("/admin/product/topRepurchase/{year}/{month}")
     public ResponseEntity<List<ProductRespone>> getTop10RepurchaseProduct(@PathVariable int year, @PathVariable int month) {
         // Get list id of top 10 repurchase product

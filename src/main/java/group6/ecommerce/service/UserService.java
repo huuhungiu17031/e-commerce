@@ -11,4 +11,6 @@ public interface UserService {
     void register(UserRequest userRequest);
 
     Users findByEmail(String email);
+
+    Users findById (int id);
 }

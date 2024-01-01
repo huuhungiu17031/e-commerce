@@ -36,51 +36,32 @@ public class ProductController {
     public ResponseEntity<PageProductRespone> findByPage (@PathVariable(value = "page")Optional<Integer> p,
                                                           @RequestParam (value = "sort", defaultValue = "")String sort,
                                                           @RequestParam (value = "category", defaultValue = "")String cateogory){
-        if (cateogory.equalsIgnoreCase("") || categoryService.findCategoryByName(cateogory)==null){
-        if (sort.equalsIgnoreCase("nameaz")){
-            Pageable page = PageRequest.of(p.orElse(0),12, Sort.by("product_name").ascending());
-            Page<Product> pageRespone = productService.findAllQuantityLarger0(page);
-            return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
-        }else if (sort.equalsIgnoreCase("nameza")){
-            Pageable page = PageRequest.of(p.orElse(0),12, Sort.by("product_name").descending());
-            Page<Product> pageRespone = productService.findAllQuantityLarger0(page);
-            return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
-        }else if (sort.equalsIgnoreCase("pricelowtohight")){
-            Pageable page = PageRequest.of(p.orElse(0),12, Sort.by("product_price").ascending());
-            Page<Product> pageRespone = productService.findAllQuantityLarger0(page);
-            return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
-        }else if (sort.equalsIgnoreCase("pricehighttolow")){
-            Pageable page = PageRequest.of(p.orElse(0),12, Sort.by("product_price").descending());
-            Page<Product> pageRespone = productService.findAllQuantityLarger0(page);
-            return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
-        }else{
-            Pageable page = PageRequest.of(p.orElse(0),12);
-            Page<Product> pageRespone = productService.findAllQuantityLarger0(page);
-            return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
+        Pageable page = null;
+        Page<Product> pageRespone = null;
+        switch (sort){
+            case "nameaz":
+                page = PageRequest.of(p.orElse(0),12, Sort.by("product_name").ascending());
+                break;
+            case "nameza":
+                page = PageRequest.of(p.orElse(0),12, Sort.by("product_name").descending());
+                break;
+            case "pricelowtohight":
+                page = PageRequest.of(p.orElse(0),12, Sort.by("product_price").ascending());
+                break;
+            case "pricehighttolow":
+                page = PageRequest.of(p.orElse(0),12, Sort.by("product_price").descending());
+                break;
+            default:
+                page = PageRequest.of(p.orElse(0),12);
+                break;
         }
-        }else{
-            if (sort.equalsIgnoreCase("nameaz")){
-                Pageable page = PageRequest.of(p.orElse(0),12, Sort.by("product_name").ascending());
-                Page<Product> pageRespone = productService.findByCategoryNameQuantityLarger0(cateogory,page);
-                return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
-            }else if (sort.equalsIgnoreCase("nameza")){
-                Pageable page = PageRequest.of(p.orElse(0),12, Sort.by("product_name").descending());
-                Page<Product> pageRespone = productService.findByCategoryNameQuantityLarger0(cateogory,page);
-                return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
-            }else if (sort.equalsIgnoreCase("pricelowtohight")){
-                Pageable page = PageRequest.of(p.orElse(0),12, Sort.by("product_price").ascending());
-                Page<Product> pageRespone = productService.findByCategoryNameQuantityLarger0(cateogory,page);
-                return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
-            }else if (sort.equalsIgnoreCase("pricehighttolow")){
-                Pageable page = PageRequest.of(p.orElse(0),12, Sort.by("product_price").descending());
-                Page<Product> pageRespone = productService.findByCategoryNameQuantityLarger0(cateogory,page);
-                return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
-            }else{
-                Pageable page = PageRequest.of(p.orElse(0),12);
-                Page<Product> pageRespone = productService.findByCategoryNameQuantityLarger0(cateogory,page);
-                return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
-            }
+        if (cateogory.equalsIgnoreCase("")) {
+            pageRespone = productService.findAllQuantityLarger0(page);
+        }else {
+            pageRespone = productService.findByCategoryNameQuantityLarger0(cateogory,page);
         }
+        return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
+
     }
 
     @GetMapping ("/user/product/details/{id}")
@@ -128,3 +109,5 @@ public class ProductController {
         return new ResponseEntity<>(list1, HttpStatus.OK);
     }
 }
+
+

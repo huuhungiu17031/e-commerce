@@ -2,11 +2,16 @@ package group6.ecommerce.service.impl;
 
 import group6.ecommerce.Repository.ProductRepository;
 import group6.ecommerce.model.Product;
+import group6.ecommerce.payload.response.PaginationResponse;
+import group6.ecommerce.payload.response.ProductRespone;
 import group6.ecommerce.service.ProductService;
+import group6.ecommerce.utils.HandleSort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -37,7 +42,27 @@ public class ProductServiceImpls implements ProductService {
 
     @Override
     public Page<Product> findByCategoryNameQuantityLarger0(String categoryName, Pageable pageAble) {
-        return productRepository.findByCategoryNameQuantityLarger0(categoryName,pageAble);
+        return productRepository.findByCategoryNameQuantityLarger0(categoryName, pageAble);
+    }
+
+    @Override
+    public PaginationResponse listProduct(
+            Integer pageSize,
+            Integer pageNum,
+            String fields,
+            String orderBy,
+            Boolean getAll,
+            Integer categoryId) {
+        Sort sort = HandleSort.buildSortProperties(fields, orderBy);
+        Pageable pageable = PageRequest.of(pageNum, pageSize, sort);
+        Page<Product> pageProduct = productRepository.findByCategoryAndSort(categoryId, pageable);
+        return new PaginationResponse(
+                pageNum,
+                pageSize,
+                pageProduct.getTotalElements(),
+                pageProduct.isLast(),
+                pageProduct.getTotalPages(),
+                pageProduct.getContent().stream().map(product -> new ProductRespone(product)).toList());
     }
 
     @Override

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpls implements ProductService {
@@ -36,5 +38,10 @@ public class ProductServiceImpls implements ProductService {
     @Override
     public Page<Product> findByCategoryNameQuantityLarger0(String categoryName, Pageable pageAble) {
         return productRepository.findByCategoryNameQuantityLarger0(categoryName,pageAble);
+    }
+
+    @Override
+    public List<Integer> getTop10RepurchaseProduct(int year, int month) {
+        return productRepository.getTop10RepurchaseProduct(year,month);
     }
 }

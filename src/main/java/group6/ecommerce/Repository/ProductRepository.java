@@ -5,7 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Integer> {
@@ -25,4 +28,13 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
             "group by product_details.product_id, product_details.quantity\n" +
             "having product_details.quantity > 0))\n", nativeQuery = true)
     Page<Product> findByCategoryNameQuantityLarger0 (String categoryName,Pageable pageAble);
+    @Query( value = "SELECT TOP 10 p.product_id " +
+            "FROM product p " +
+            "INNER JOIN order_details od ON p.product_id = od.product_id " +
+            "INNER JOIN order o ON od.order_id = o.order_id " +
+            "WHERE YEAR(o.order_date) = :year AND MONTH(o.order_date) = :month " +
+            "GROUP BY p.product_id, p.product_name " +
+            "ORDER BY COUNT(o.order_id) - COUNT(DISTINCT o.user_id) DESC " +
+            "LIMIT 10", nativeQuery = true)
+    List<Integer> getTop10RepurchaseProduct(@Param("year") int year,@Param("month") int month);
 }

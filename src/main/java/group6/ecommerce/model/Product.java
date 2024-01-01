@@ -37,6 +37,6 @@ public class Product {
     private Type type;
     @Column (name = "Description")
     private String description;
-    @OneToMany(mappedBy = "Products")
+    @OneToMany(mappedBy = "Products", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ProductDetails> listProductDetails;
 }

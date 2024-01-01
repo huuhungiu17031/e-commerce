@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Data
-@Getter
 @Setter
 public class Users {
     @Id
@@ -31,6 +29,46 @@ public class Users {
     private String district;
     @Column(name = "Ward", nullable = false, length = 50)
     private String ward;
-    @OneToOne(mappedBy = "UserCart")
+    @OneToOne(mappedBy = "UserCart", fetch = FetchType.EAGER)
     private Cart cart;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public String getWard() {
+        return ward;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
 }

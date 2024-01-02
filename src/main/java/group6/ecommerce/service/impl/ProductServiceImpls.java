@@ -54,4 +54,23 @@ public class ProductServiceImpls implements ProductService {
                 pageProduct.getTotalPages(),
                 pageProduct.getContent().stream().map(product -> new ProductRespone(product)).toList());
     }
+
+    public PaginationResponse listProductByName(
+            Integer pageSize,
+            Integer pageNum,
+            String fields,
+            String orderBy,
+            Boolean getAll,
+            String name) {
+        Sort sort = HandleSort.buildSortProperties(fields, orderBy);
+        Pageable pageable = PageRequest.of(pageNum, pageSize, sort);
+        Page<Product> pageProduct = productRepository.findByNameContainingIgnoreCase(name, pageable);
+        return new PaginationResponse(
+                pageNum,
+                pageSize,
+                pageProduct.getTotalElements(),
+                pageProduct.isLast(),
+                pageProduct.getTotalPages(),
+                pageProduct.getContent().stream().map(product -> new ProductRespone(product)).toList());
+    }
 }

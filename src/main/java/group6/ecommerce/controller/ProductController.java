@@ -1,8 +1,5 @@
 package group6.ecommerce.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import group6.ecommerce.model.*;
-import group6.ecommerce.payload.request.ProductDetailRequest;
 import group6.ecommerce.model.Category;
 import group6.ecommerce.model.Product;
 import group6.ecommerce.model.Type;
@@ -10,7 +7,9 @@ import group6.ecommerce.payload.request.ProductRequest;
 import group6.ecommerce.payload.response.HttpResponse;
 import group6.ecommerce.payload.response.PageProductRespone;
 import group6.ecommerce.payload.response.ProductRespone;
-import group6.ecommerce.service.*;
+import group6.ecommerce.service.CategoryService;
+import group6.ecommerce.service.ProductService;
+import group6.ecommerce.service.TypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,12 +28,8 @@ import java.util.Optional;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductDetailsService productDetailsService;
     private final TypeService typeService;
     private final CategoryService categoryService;
-    private final ColorService colorService;
-    private final SizeService sizeService;
-
     @GetMapping("user/product")
     public ResponseEntity<HttpResponse> getProduct(
             @RequestParam(required = false, defaultValue = "12", value = "pageSize") Integer pageSize,
@@ -77,32 +71,7 @@ public class ProductController {
 
         product.setType(type);
         product.setCategory(category);
-        Product productSaved = productService.addNewProduct(product);
-
-        List<ProductDetails> productDetailsList = new ArrayList<>();
-
-        // Check if product detail list is empty
-        if(!productRequest.getProductDetailRequestList().isEmpty()){
-            for (ProductDetailRequest productDetailRequest : productRequest.getProductDetailRequestList()){
-                ProductDetails productDetails = new ProductDetails();
-                // Get size object in DB
-                Size size = sizeService.findSizeByName(productDetailRequest.getSizeName());
-
-                // Get color object in DB
-                Color color = colorService.findColorByName(productDetailRequest.getColor());
-
-                productDetails.setSize(size);
-                productDetails.setColor(color);
-                productDetails.setQuantity(productDetailRequest.getQuantity());
-                productDetails.setOutOfStock(productDetailRequest.isOutOfStock());
-                productDetails.setProducts(productSaved);
-
-                ProductDetails productDetailsSaved = productDetailsService.addNewProductDetail(productDetails);
-                productDetailsList.add(productDetailsSaved);
-            }
-        }
-
-        productSaved.setListProductDetails(productDetailsList);
+        productService.addNewProduct(product);
         return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
 }

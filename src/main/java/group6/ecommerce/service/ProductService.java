@@ -15,4 +15,5 @@ public interface ProductService {
     Product addNewProduct(Product product);
 
     PaginationResponse listProduct(Integer pageSize, Integer pageNum, String fields, String orderBy, Boolean getAll, Integer categoryId);
+    public PaginationResponse listProductByName(Integer pageSize,Integer pageNum,String fields,String orderBy,Boolean getAll,String search);
 }

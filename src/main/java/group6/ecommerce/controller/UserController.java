@@ -12,7 +12,7 @@ import group6.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/auth/")
+@RequestMapping("auth")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;

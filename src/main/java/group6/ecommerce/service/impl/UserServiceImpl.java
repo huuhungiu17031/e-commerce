@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import group6.ecommerce.Repository.RoleRepository;
 import group6.ecommerce.Repository.UserRepository;
+import group6.ecommerce.exception.NotFoundException;
 import group6.ecommerce.model.Role;
 import group6.ecommerce.model.Users;
 import group6.ecommerce.payload.request.LoginRequest;
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(UserRequest userRequest) {
         String encryptedPassword = passwordEncoder.encode(userRequest.getPassword());
-        Role role = roleRepository.findByRoleName(Constant.ROLE_USER);
+        Role role = roleRepository.findByRoleName("ROLE_USER");
         Users users = mapUserRequestToUser(userRequest, role, encryptedPassword);
         userRepository.save(users);
         Cart cart = new Cart();
@@ -75,7 +76,7 @@ public class UserServiceImpl implements UserService {
     public Users findByEmail(String email) {
         Optional<Users> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isEmpty())
-            throw new RuntimeException("No user with this email");
+            throw new NotFoundException("No user with this email");
         return optionalUser.get();
     }
 

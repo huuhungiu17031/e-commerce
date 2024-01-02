@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import group6.ecommerce.Repository.RefreshTokenRepository;
 import group6.ecommerce.Repository.UserRepository;
+import group6.ecommerce.exception.NotFoundException;
 import group6.ecommerce.model.RefreshToken;
 import group6.ecommerce.model.Users;
 import group6.ecommerce.service.RefreshTokenService;
@@ -85,12 +86,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     public RefreshToken processRefreshToken(String email) {
         Optional<Users> optional = userRepository.findByEmail(email);
         if (optional.isEmpty())
-            throw new RuntimeException("Email does not exist");
+            throw new NotFoundException("Email does not exist");
         Users user = optional.get();
         Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByUserId(user.getId());
         System.out.println(optionalRefreshToken.get().getRefreshToken());
         if (optional.isEmpty())
-            throw new RuntimeException("Refresh token does not exist");
+            throw new NotFoundException("Refresh token does not exist");
         if (optionalRefreshToken.get().getRefreshToken() == null) {
             String refreshToken = generateRefreshToken(email);
             RefreshToken newRefreshToken = new RefreshToken();
@@ -107,7 +108,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     public RefreshToken handleGetNewRefreshToken(String token) {
         Optional<RefreshToken> optional = refreshTokenRepository.findByRefreshToken(token);
         if (optional.isEmpty())
-            throw new RuntimeException("Refresh token does not exist");
+            throw new NotFoundException("Refresh token does not exist");
         RefreshToken dbRefreshToken = optional.get();
         if (isTokenValid(dbRefreshToken.getRefreshToken())) {
             String email = extractEmail(token);
@@ -116,14 +117,14 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             return refreshTokenRepository.save(dbRefreshToken);
         }
         refreshTokenRepository.deleteById(dbRefreshToken.getId());
-        throw new RuntimeException("Sign in again");
+        throw new NotFoundException("Sign in again");
     }
 
     @Override
     public void provokeToken(Integer userId) {
         Optional<RefreshToken> optional = refreshTokenRepository.findByUserId(userId);
         if (optional.isEmpty())
-            throw new RuntimeException("Refresh token does not exist");
+            throw new NotFoundException("Refresh token does not exist");
         RefreshToken dbRefreshToken = optional.get();
         refreshTokenRepository.deleteById(dbRefreshToken.getId());
     }

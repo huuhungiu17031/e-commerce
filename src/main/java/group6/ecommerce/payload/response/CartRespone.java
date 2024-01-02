@@ -3,7 +3,6 @@ package group6.ecommerce.payload.response;
 
 import group6.ecommerce.model.Cart;
 
-import group6.ecommerce.model.Cart_Details;
 import lombok.Getter;
 
 import java.util.HashMap;

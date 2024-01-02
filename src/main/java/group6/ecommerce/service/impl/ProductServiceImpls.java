@@ -66,7 +66,7 @@ public class ProductServiceImpls implements ProductService {
     }
 
     @Override
-    public List<Integer> getTop10RepurchaseProduct(int year, int month) {
-        return productRepository.getTop10RepurchaseProduct(year,month);
+    public List<Integer> getTopRepurchaseProduct(int year, int month) {
+        return productRepository.getTopRepurchaseProduct(year,month);
     }
 }

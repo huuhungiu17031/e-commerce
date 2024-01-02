@@ -32,12 +32,12 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
     @Query( value = "SELECT TOP 10 p.product_id " +
             "FROM product p " +
-            "INNER JOIN order_details od ON p.product_id = od.product_id " +
-            "INNER JOIN order o ON od.order_id = o.order_id " +
+            "INNER JOIN Order_details od ON p.product_id = od.product_id " +
+            "INNER JOIN Orders o ON od.order_id = o.order_id " +
             "WHERE YEAR(o.order_date) = :year AND MONTH(o.order_date) = :month " +
             "GROUP BY p.product_id, p.product_name " +
             "ORDER BY COUNT(o.order_id) - COUNT(DISTINCT o.user_id) DESC ", nativeQuery = true)
-    List<Integer> getTop10RepurchaseProduct(@Param("year") int year,@Param("month") int month);
+    List<Integer> getTopRepurchaseProduct(@Param("year") int year,@Param("month") int month);
 
 
 

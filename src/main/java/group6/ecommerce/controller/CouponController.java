@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/coupon")
+@RequestMapping("api/admin/coupon")
 @RequiredArgsConstructor
 public class CouponController {
     private final CouponService couponService;

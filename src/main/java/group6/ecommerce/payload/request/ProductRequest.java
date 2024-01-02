@@ -1,9 +1,13 @@
 package group6.ecommerce.payload.request;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonProperty;
 import group6.ecommerce.model.Category;
 import group6.ecommerce.model.ProductDetails;
 import group6.ecommerce.model.Type;
+=======
+
+>>>>>>> 7d5c6772804c715dbf720d08247f581a2d651506
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

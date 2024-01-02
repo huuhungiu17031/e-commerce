@@ -7,10 +7,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductDetailsRepository extends JpaRepository<ProductDetails,Integer> {
-    @Query (value = "select p.product_id,p.color_id,p.out_of_stock,p.product_details_id,p.quantity,p.size_id,p.quantity\n" +
-            "from product_details p join colors on p.color_id = colors.color_id\n" +
-            "join size on p.product_id = size.size_id\n" +
-            "Where product_id = ?1 and colors.color_name = ?2 and size.size_name = ?3", nativeQuery = true)
+    @Query (value = "select product_details.* from product_details join size on product_details.size_id = size.size_id\n" +
+            "join colors on colors.color_id = product_details.color_id\n" +
+            "where product_details.product_id = ?1 and colors.color_name = ?2 and size.size_name = ?3",nativeQuery = true)
     public ProductDetails findProductDetailsByProductIdAndColornameAndSizename (int productId, String colorName, String sizeName);
 
     ProductDetails saveAndFlush(ProductDetails productDetails);

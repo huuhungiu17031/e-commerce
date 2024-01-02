@@ -26,13 +26,21 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	compileOnly 'org.projectlombok:lombok'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+<<<<<<< HEAD
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.12.3'
+=======
+
+>>>>>>> 7d5c6772804c715dbf720d08247f581a2d651506
 }
 
 tasks.named('test') {

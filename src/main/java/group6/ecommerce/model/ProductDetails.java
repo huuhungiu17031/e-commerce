@@ -28,4 +28,10 @@ public class ProductDetails {
     Product Products;
     @Column (name = "OutOfStock")
     private boolean outOfStock;
+
+
+    public boolean isOutOfStock() {
+        return quantity == 0;
+    }
+
 }

@@ -3,7 +3,11 @@ package group6.ecommerce.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import group6.ecommerce.model.*;
 import group6.ecommerce.payload.request.ProductDetailRequest;
+import group6.ecommerce.model.Category;
+import group6.ecommerce.model.Product;
+import group6.ecommerce.model.Type;
 import group6.ecommerce.payload.request.ProductRequest;
+import group6.ecommerce.payload.response.HttpResponse;
 import group6.ecommerce.payload.response.PageProductRespone;
 import group6.ecommerce.payload.response.ProductRespone;
 import group6.ecommerce.service.*;
@@ -11,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping ("/product")
+@RequestMapping ("/api")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -32,22 +37,35 @@ public class ProductController {
     private final SizeService sizeService;
 
     @GetMapping ("/{id}")
-    public ResponseEntity<PageProductRespone> findByPage (@PathVariable(value = "id")Optional<Integer> p){
-        Pageable page = PageRequest.of(p.orElse(0),12);
+    public ResponseEntity<PageProductRespone> findByPage (@PathVariable(value = "id")Optional<Integer> p) {
+        Pageable page = PageRequest.of(p.orElse(0), 12);
         Page<Product> pageRespone = productService.findAllQuantityLarger0(page);
         return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
     }
+    @GetMapping("user/product")
+    public ResponseEntity<HttpResponse> getProduct(
+            @RequestParam(required = false, defaultValue = "12", value = "pageSize") Integer pageSize,
+            @RequestParam(required = false, defaultValue = "0", value = "pageNum") Integer pageNum,
+            @RequestParam(required = false, defaultValue = "id", value = "fields") String fields,
+            @RequestParam(required = false, defaultValue = "asc", value = "orderBy") String orderBy,
+            @RequestParam(required = false, defaultValue = "false", value = "getAll") Boolean getAll,
+            @RequestParam(required = false, value = "categoryId") Integer categoryId) {
+        HttpResponse httpResponse = new HttpResponse(
+                HttpStatus.OK.value(),
+                null,
+                productService.listProduct(pageSize, pageNum, fields, orderBy, getAll, categoryId));
+        return ResponseEntity.status(HttpStatus.OK).body(httpResponse);
+    }
 
-    @GetMapping ("/details/{id}")
+    @GetMapping ("/user/product/details/{id}")
     public ResponseEntity<ProductRespone> DetailsProduct (@PathVariable("id")Optional<Integer> id){
         Product Product = productService.findById(id.get());
         ProductRespone productRespone = new ProductRespone(Product);
         return ResponseEntity.status(HttpStatus.OK).body(productRespone);
     }
 
-    @PostMapping(value = "/add" )
-    public ResponseEntity<String> addProduct(@RequestBody ProductRequest productRequest)  {
-
+    @PostMapping("/admin/product/add")
+    public ResponseEntity<String> addProduct(@RequestBody ProductRequest productRequest){
         // Get type object in DB
         Type type = typeService.getTypeById(productRequest.getTypeName());
 

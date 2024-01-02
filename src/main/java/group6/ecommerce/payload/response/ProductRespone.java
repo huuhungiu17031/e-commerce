@@ -33,4 +33,8 @@ public class ProductRespone {
         p.getListProductDetails().stream().forEach(e -> listProductDetails.add(new ProductDetailsRespone(e)));
         this.productDetails = listProductDetails;
     }
+
+    public boolean isOutOfStock (){
+        return productDetails.isEmpty();
+    }
 }

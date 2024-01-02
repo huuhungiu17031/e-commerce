@@ -12,13 +12,8 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Integer> {
-    @Query (value = "select * from product \n" +
-            "where product_id in (select distinct product_details.product_id from product_details\n" +
-            "group by product_details.product_id, product_details.quantity\n" +
-            "having product_details.quantity > 0)", nativeQuery = true)
-    Page<Product> findAllQuantityLarger0 (Pageable pageAble);
-
     public Product saveAndFlush(Product product);
+
 
     @Query (value = "select * from product \n" +
             "where product_id in (select distinct product_id \n" +
@@ -38,6 +33,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
             "GROUP BY p.product_id, p.product_name " +
             "ORDER BY COUNT(o.order_id) - COUNT(DISTINCT o.user_id) DESC ", nativeQuery = true)
     List<Integer> getTopRepurchaseProduct(@Param("year") int year,@Param("month") int month);
+
 
 
 

@@ -29,13 +29,16 @@ public class CouponController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Thêm mã giảm giá không thành công");
         }
     }
+
     @GetMapping("/list")
     public ResponseEntity<List<Coupon>> getAllCoupon(){
         List<Coupon> list = couponService.findAllCoupon();
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCoupon(@PathVariable int id) {
+
         if (couponService.deleteCoupon(id)) {
             return ResponseEntity.status(HttpStatus.OK).body("Xóa mã giảm giá thành công");
         } else {
@@ -46,6 +49,5 @@ public class CouponController {
     public ResponseEntity<Coupon> findCouponWithCode(@PathVariable String code){
         return new ResponseEntity<>(couponService.findCouponWithCode(code), HttpStatus.OK);
     }
-
 
 }

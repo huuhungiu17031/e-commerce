@@ -17,7 +17,7 @@ public class ProductDetailsRespone {
     public ProductDetailsRespone(ProductDetails productDetails){
         this.productDetailsId = productDetails.getProductDetailsId();
         this.size = productDetails.getSize().getSizeName();
-        this.color = productDetails.getColor().getName();
+        this.color = productDetails.getColor().getColorName();
         this.quantity = productDetails.getQuantity();
         this.outOfStock = productDetails.isOutOfStock();
     }

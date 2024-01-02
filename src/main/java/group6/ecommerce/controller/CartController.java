@@ -6,27 +6,40 @@ import group6.ecommerce.payload.request.CartDetailsRequest;
 import group6.ecommerce.payload.response.CartRespone;
 import group6.ecommerce.service.CartService;
 import group6.ecommerce.service.ProductDetailsService;
+import group6.ecommerce.service.ProductService;
+import group6.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping ("/api/user/cart")
+@RequestMapping("cart")
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
     private final ProductDetailsService productDetailsService;
+    private final UserService userService;
+    private final ProductService productService;
 
-    @GetMapping ("")
+    @GetMapping
     public ResponseEntity<CartRespone> cart (){
-        Users userLogin = new Users();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Users principal = (Users) authentication.getPrincipal();
+        System.out.println(principal.getId());
+        Users userLogin = userService.findById(principal.getId());
         CartRespone cartRespone = new CartRespone(userLogin.getCart());
         return ResponseEntity.status(HttpStatus.OK).body(cartRespone);
     }
-    @PostMapping ("/addtocart")
+    @PostMapping
     public ResponseEntity<String> addToCart (@RequestBody CartDetailsRequest cartDetailsRequest){
-        Users userLogin = new Users();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Users principal = (Users) authentication.getPrincipal();
+        Users userLogin = userService.findById(principal.getId());
+        cartDetailsRequest.setUser(userLogin);
+        cartDetailsRequest.setProduct(productService.findById(cartDetailsRequest.getProductId()));
         Cart_Details item = cartDetailsRequest.getCartDetails();
         String staus = cartService.addTocart(item,userLogin.getId());
         if (staus.equalsIgnoreCase("Thêm Vào Giỏ Hàng Thành Công")) {
@@ -35,11 +48,15 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(staus);
         }
     }
-    @PostMapping ("/removetocart")
+
+    @DeleteMapping
     ResponseEntity<String> removeToCart (@RequestBody CartDetailsRequest cartDetailsRequest){
-        Users userLogin = new Users();
-        cartService.removeToCart(cartDetailsRequest.getCartDetails(),userLogin.getId());
-        return ResponseEntity.status(HttpStatus.OK).body("Xóa Giỏ Hàng Thành Công");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Users principal = (Users) authentication.getPrincipal();
+        cartDetailsRequest.setUser(principal);
+        cartDetailsRequest.setProduct(productService.findById(cartDetailsRequest.getProductId()));
+        String status = cartService.removeToCart(cartDetailsRequest.getCartDetails(), principal.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(status);
     }
 }
 

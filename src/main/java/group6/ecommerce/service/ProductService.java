@@ -14,14 +14,13 @@ public interface ProductService {
 
     Page<Product> findByPage(Pageable pages);
 
-    Page<Product> findAllQuantityLarger0(Pageable pageAble);
 
     int addNewProduct(Product product);
 
 
-    Page<Product> findByCategoryNameQuantityLarger0 (String categoryName,Pageable pageAble);
 
     List<Integer> getTopRepurchaseProduct(@Param("year") int year, @Param("month") int month);
+
 
     PaginationResponse listProduct(Integer pageSize, Integer pageNum, String fields, String orderBy, Boolean getAll, Integer categoryId);
 

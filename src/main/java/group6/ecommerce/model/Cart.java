@@ -20,6 +20,8 @@ public class Cart {
     @OneToOne
     @JoinColumn (name = "UserId")
     private Users UserCart;
-    @OneToMany (mappedBy = "ItemCart")
+    @OneToMany (mappedBy = "ItemCart",
+            fetch = FetchType.EAGER,
+            orphanRemoval = true)
     Map<String,Cart_Details> listItems;
 }

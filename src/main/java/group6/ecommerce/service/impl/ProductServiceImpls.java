@@ -7,11 +7,14 @@ import group6.ecommerce.payload.response.ProductRespone;
 import group6.ecommerce.service.ProductService;
 import group6.ecommerce.utils.HandleSort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +38,16 @@ public class ProductServiceImpls implements ProductService {
     }
 
 
+    public abstract class ProductServiceImpl implements ProductService {
+
+        @Autowired
+        private ProductRepository productRepository;
+
+        @Override
+        public List<Product> findProductsByName(String name) {
+            return productRepository.findByNameContainingIgnoreCase(name);
+        }
+    }
     @Override
     public PaginationResponse listProduct(
             Integer pageSize,
@@ -53,5 +66,10 @@ public class ProductServiceImpls implements ProductService {
                 pageProduct.isLast(),
                 pageProduct.getTotalPages(),
                 pageProduct.getContent().stream().map(product -> new ProductRespone(product)).toList());
+    }
+
+    @Override
+    public List<Product> findProductsByName(String name) {
+        return null;
     }
 }

@@ -81,22 +81,25 @@ public class ProductController {
 
         List<ProductDetails> productDetailsList = new ArrayList<>();
 
-        for (ProductDetailRequest productDetailRequest : productRequest.getProductDetailRequestList()){
-            ProductDetails productDetails = new ProductDetails();
-            // Get size object in DB
-            Size size = sizeService.findSizeByName(productDetailRequest.getSizeName());
+        // Check if product detail list is empty
+        if(!productRequest.getProductDetailRequestList().isEmpty()){
+            for (ProductDetailRequest productDetailRequest : productRequest.getProductDetailRequestList()){
+                ProductDetails productDetails = new ProductDetails();
+                // Get size object in DB
+                Size size = sizeService.findSizeByName(productDetailRequest.getSizeName());
 
-            // Get color object in DB
-            Color color = colorService.findColorByName(productDetailRequest.getColor());
+                // Get color object in DB
+                Color color = colorService.findColorByName(productDetailRequest.getColor());
 
-            productDetails.setSize(size);
-            productDetails.setColor(color);
-            productDetails.setQuantity(productDetailRequest.getQuantity());
-            productDetails.setOutOfStock(productDetailRequest.isOutOfStock());
-            productDetails.setProducts(productSaved);
+                productDetails.setSize(size);
+                productDetails.setColor(color);
+                productDetails.setQuantity(productDetailRequest.getQuantity());
+                productDetails.setOutOfStock(productDetailRequest.isOutOfStock());
+                productDetails.setProducts(productSaved);
 
-            ProductDetails productDetailsSaved = productDetailsService.addNewProductDetail(productDetails);
-            productDetailsList.add(productDetailsSaved);
+                ProductDetails productDetailsSaved = productDetailsService.addNewProductDetail(productDetails);
+                productDetailsList.add(productDetailsSaved);
+            }
         }
 
         productSaved.setListProductDetails(productDetailsList);

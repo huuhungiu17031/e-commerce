@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(UserRequest userRequest) {
         String encryptedPassword = passwordEncoder.encode(userRequest.getPassword());
-        Role role = roleRepository.findByRoleName(Constant.ROLE_USER);
+        Role role = roleRepository.findByRoleName("ROLE_USER");
         Users users = mapUserRequestToUser(userRequest, role, encryptedPassword);
         userRepository.save(users);
         Cart cart = new Cart();

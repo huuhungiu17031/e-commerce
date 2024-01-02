@@ -5,32 +5,26 @@ import group6.ecommerce.model.Product;
 import group6.ecommerce.model.Type;
 import group6.ecommerce.payload.request.ProductRequest;
 import group6.ecommerce.payload.response.HttpResponse;
-import group6.ecommerce.payload.response.PageProductRespone;
 import group6.ecommerce.payload.response.ProductRespone;
 import group6.ecommerce.service.CategoryService;
 import group6.ecommerce.service.ProductService;
 import group6.ecommerce.service.TypeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping ("/api")
+@RequestMapping ("product")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
     private final TypeService typeService;
     private final CategoryService categoryService;
-    @GetMapping("user/product")
+    @GetMapping
     public ResponseEntity<HttpResponse> getProduct(
             @RequestParam(required = false, defaultValue = "12", value = "pageSize") Integer pageSize,
             @RequestParam(required = false, defaultValue = "0", value = "pageNum") Integer pageNum,
@@ -45,14 +39,14 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(httpResponse);
     }
 
-    @GetMapping ("/user/product/details/{id}")
-    public ResponseEntity<ProductRespone> DetailsProduct (@PathVariable("id")Optional<Integer> id){
+    @GetMapping("{id}")
+    public ResponseEntity<ProductRespone> DetailsProduct (@PathVariable("id") Optional<Integer> id){
         Product Product = productService.findById(id.get());
         ProductRespone productRespone = new ProductRespone(Product);
         return ResponseEntity.status(HttpStatus.OK).body(productRespone);
     }
 
-    @PostMapping("/admin/product/add")
+    @PostMapping
     public ResponseEntity<String> addProduct(@RequestBody ProductRequest productRequest){
         // Get type object in DB
         Type type = typeService.getTypeById(productRequest.getTypeName());

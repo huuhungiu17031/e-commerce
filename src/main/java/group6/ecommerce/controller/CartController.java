@@ -13,11 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping ("/api/user/cart")
+@RequestMapping("cart")
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
@@ -25,7 +24,7 @@ public class CartController {
     private final UserService userService;
     private final ProductService productService;
 
-    @GetMapping ("")
+    @GetMapping
     public ResponseEntity<CartRespone> cart (){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Users principal = (Users) authentication.getPrincipal();
@@ -34,7 +33,7 @@ public class CartController {
         CartRespone cartRespone = new CartRespone(userLogin.getCart());
         return ResponseEntity.status(HttpStatus.OK).body(cartRespone);
     }
-    @PostMapping ("/addtocart")
+    @PostMapping
     public ResponseEntity<String> addToCart (@RequestBody CartDetailsRequest cartDetailsRequest){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Users principal = (Users) authentication.getPrincipal();
@@ -49,14 +48,14 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(staus);
         }
     }
-    @PostMapping ("/removetocart")
+
+    @DeleteMapping
     ResponseEntity<String> removeToCart (@RequestBody CartDetailsRequest cartDetailsRequest){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Users principal = (Users) authentication.getPrincipal();
-        Users userLogin = userService.findById(principal.getId());
-        cartDetailsRequest.setUser(userLogin);
+        cartDetailsRequest.setUser(principal);
         cartDetailsRequest.setProduct(productService.findById(cartDetailsRequest.getProductId()));
-        String status = cartService.removeToCart(cartDetailsRequest.getCartDetails(),userLogin.getId());
+        String status = cartService.removeToCart(cartDetailsRequest.getCartDetails(), principal.getId());
         return ResponseEntity.status(HttpStatus.OK).body(status);
     }
 }

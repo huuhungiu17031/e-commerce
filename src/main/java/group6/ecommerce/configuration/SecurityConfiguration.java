@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import group6.ecommerce.filter.JwtFilter;
 import group6.ecommerce.provider.CustomAuthenticationProvider;
+import group6.ecommerce.utils.Constant;
 
 @Configuration
 @EnableWebSecurity
@@ -47,7 +49,11 @@ public class SecurityConfiguration {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers(HttpMethod.POST, "/product/**").hasAnyRole(Constant.ROLE_ADMIN)
+                        .requestMatchers("/coupon/**").hasRole(Constant.ROLE_ADMIN)
+                        .requestMatchers(HttpMethod.POST, "/product/**").hasRole(Constant.ROLE_ADMIN)
+                        .anyRequest().permitAll())
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();

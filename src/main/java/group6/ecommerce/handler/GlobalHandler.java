@@ -5,6 +5,8 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import group6.ecommerce.exception.NotFoundException;
+
 @ControllerAdvice
 public class GlobalHandler {
 
@@ -14,9 +16,15 @@ public class GlobalHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    ProblemDetail handleNotFoundException(NotFoundException exc) {
+        ProblemDetail problemDetail = generateProblemDetail(HttpStatus.BAD_REQUEST, exc.getMessage());
+        return problemDetail;
+    }
+
     private ProblemDetail generateProblemDetail(HttpStatus httpStatus, String errorMessage) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
-                HttpStatus.BAD_REQUEST,
+                httpStatus,
                 errorMessage);
         problemDetail.setProperty("Timestamp", System.currentTimeMillis());
         return problemDetail;

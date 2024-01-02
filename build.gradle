@@ -36,11 +36,8 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-<<<<<<< HEAD
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.12.3'
-=======
 
->>>>>>> 7d5c6772804c715dbf720d08247f581a2d651506
 }
 
 tasks.named('test') {

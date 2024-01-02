@@ -36,12 +36,6 @@ public class ProductController {
     private final ColorService colorService;
     private final SizeService sizeService;
 
-    @GetMapping ("/{id}")
-    public ResponseEntity<PageProductRespone> findByPage (@PathVariable(value = "id")Optional<Integer> p) {
-        Pageable page = PageRequest.of(p.orElse(0), 12);
-        Page<Product> pageRespone = productService.findAllQuantityLarger0(page);
-        return ResponseEntity.status(HttpStatus.OK).body(new PageProductRespone(pageRespone));
-    }
     @GetMapping("user/product")
     public ResponseEntity<HttpResponse> getProduct(
             @RequestParam(required = false, defaultValue = "12", value = "pageSize") Integer pageSize,

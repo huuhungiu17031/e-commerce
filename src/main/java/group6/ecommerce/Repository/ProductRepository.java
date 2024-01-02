@@ -14,4 +14,6 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
     @Query("SELECT p FROM Product p WHERE (:categoryId IS NULL OR p.category.id = :categoryId)")
     Page<Product> findByCategoryAndSort(@Param("categoryId") Integer categoryId, Pageable pageable);
+
+    Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
 }

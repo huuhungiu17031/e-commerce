@@ -1,5 +1,6 @@
 package group6.ecommerce.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import group6.ecommerce.model.*;
 import group6.ecommerce.payload.request.ProductDetailRequest;
 import group6.ecommerce.payload.request.ProductRequest;
@@ -44,8 +45,9 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productRespone);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<String> addProduct(@RequestBody ProductRequest productRequest){
+    @PostMapping(value = "/add" )
+    public ResponseEntity<String> addProduct(@RequestBody ProductRequest productRequest)  {
+
         // Get type object in DB
         Type type = typeService.getTypeById(productRequest.getTypeName());
 

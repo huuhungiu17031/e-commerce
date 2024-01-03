@@ -86,7 +86,7 @@ public class ProductController {
         Product productSaved = productService.addNewProduct(product);
 
         List<ProductDetails> productDetailsList = new ArrayList<>();
-        if(!productRequest.getProductDetailRequestList().isEmpty()){
+        if(productRequest.getProductDetailRequestList() != null){
             for (ProductDetailRequest productDetailRequest : productRequest.getProductDetailRequestList()){
                 ProductDetails productDetails = new ProductDetails();
                 // Get size object in DB

@@ -18,9 +18,9 @@ public class ProductRequest {
     private int dimension;
     private int weight;
     private String material;
-    private String categoryName;
+    private String category;
     private String imageUrls;
-    private String typeName;
+    private String type;
     private String description;
-    private List<ProductDetailRequest> productDetailRequestList;
+    private List<ProductDetailRequest> productDetails;
 }

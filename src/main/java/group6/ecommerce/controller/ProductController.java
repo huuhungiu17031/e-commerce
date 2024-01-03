@@ -66,10 +66,10 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<String> addProduct(@RequestBody ProductRequest productRequest){
         // Get type object in DB
-        Type type = typeService.getTypeById(productRequest.getTypeName());
+        Type type = typeService.getTypeById(productRequest.getType());
 
         // Get category object in DB
-        Category category = categoryService.findCategoryByName(productRequest.getCategoryName());
+        Category category = categoryService.findCategoryByName(productRequest.getCategory());
 
         Product product = new Product();
         product.setDescription(productRequest.getDescription());
@@ -85,12 +85,11 @@ public class ProductController {
 
         Product productSaved = productService.addNewProduct(product);
 
-        List<ProductDetails> productDetailsList = new ArrayList<>();
-        if(productRequest.getProductDetailRequestList() != null){
-            for (ProductDetailRequest productDetailRequest : productRequest.getProductDetailRequestList()){
+        if(productRequest.getProductDetails() != null){
+            for (ProductDetailRequest productDetailRequest : productRequest.getProductDetails()){
                 ProductDetails productDetails = new ProductDetails();
                 // Get size object in DB
-                Size size = sizeService.findSizeByName(productDetailRequest.getSizeName());
+                Size size = sizeService.findSizeByName(productDetailRequest.getSize());
 
                 // Get color object in DB
                 Color color = colorService.findColorByName(productDetailRequest.getColor());
@@ -101,12 +100,64 @@ public class ProductController {
                 productDetails.setOutOfStock(productDetailRequest.isOutOfStock());
                 productDetails.setProducts(productSaved);
 
-                ProductDetails productDetailsSaved = productDetailsService.addNewProductDetail(productDetails);
-                productDetailsList.add(productDetailsSaved);
+                productDetailsService.addNewProductDetail(productDetails);
             }
         }
 
-        productSaved.setListProductDetails(productDetailsList);
+        return ResponseEntity.status(HttpStatus.OK).body("Success");
+    }
+
+    @PostMapping("edit/{id}")
+    public ResponseEntity<String> editProduct(@RequestBody ProductRequest productRequest, @PathVariable("id") Integer id){
+        // Find current product
+        Product findProductInDb = productService.findById(id);
+
+        // Get type object in DB
+        Type type = typeService.getTypeById(productRequest.getType());
+
+        // Get category object in DB
+        Category category = categoryService.findCategoryByName(productRequest.getCategory());
+
+        Product product = new Product();
+        // Add product Id for update
+        product.setId(findProductInDb.getId());
+
+        product.setDescription(productRequest.getDescription());
+        product.setDimension(productRequest.getDimension());
+        product.setImageUrls(productRequest.getImageUrls());
+        product.setMaterial(productRequest.getMaterial());
+        product.setName(productRequest.getName());
+        product.setPrice(productRequest.getPrice());
+        product.setWeight(productRequest.getWeight());
+
+        product.setType(type);
+        product.setCategory(category);
+
+        Product productSaved = productService.addNewProduct(product);
+
+        if(productRequest.getProductDetails() != null){
+            for(ProductDetailRequest productDetailRequest : productRequest.getProductDetails()){
+                ProductDetails productDetails = new ProductDetails();
+                if(productDetailRequest.getProductDetailsId() != null){
+                    ProductDetails findProductDetailInDb = productDetailsService.findById(productDetailRequest.getProductDetailsId());
+                    productDetails.setProductDetailsId(findProductDetailInDb.getProductDetailsId());
+                }
+                    // Get size object in DB
+                    Size size = sizeService.findSizeByName(productDetailRequest.getSize());
+
+                    // Get color object in DB
+                    Color color = colorService.findColorByName(productDetailRequest.getColor());
+
+                    productDetails.setSize(size);
+                    productDetails.setColor(color);
+                    productDetails.setQuantity(productDetailRequest.getQuantity());
+                    productDetails.setOutOfStock(productDetailRequest.isOutOfStock());
+                    productDetails.setProducts(productSaved);
+
+                    productDetailsService.addNewProductDetail(productDetails);
+            }
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
 }

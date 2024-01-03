@@ -19,4 +19,9 @@ public class ProductDetailsServiceImpls implements ProductDetailsService {
     public ProductDetails addNewProductDetail(ProductDetails productDetails) {
         return productDetailsRepository.saveAndFlush(productDetails);
     }
+
+    @Override
+    public ProductDetails findById(Integer id) {
+        return productDetailsRepository.findById(id).get();
+    }
 }

@@ -44,6 +44,7 @@ public class CouponServiceImpls implements CouponService {
     }
 
     @Override
+
     public Coupon findCouponWithCode(String code) {
         Optional<Coupon> existingCoupon = couponRepository.findAll().stream()
                 .filter(coupon -> coupon.getCode().equals(code))
@@ -54,5 +55,9 @@ public class CouponServiceImpls implements CouponService {
             newCoupon.setDiscount(0);
             return newCoupon;
         });
+    }
+    @Override
+    public Coupon findByCode(String code) {
+        return couponRepository.findByCode(code);
     }
 }

@@ -40,6 +40,21 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(httpResponse);
     }
 
+    @GetMapping (value = "search")
+    public ResponseEntity<HttpResponse> getProductByName(
+            @RequestParam(required = false, defaultValue = "12", value = "pageSize") Integer pageSize,
+            @RequestParam(required = false, defaultValue = "0", value = "pageNum") Integer pageNum,
+            @RequestParam(required = false, defaultValue = "id", value = "fields") String fields,
+            @RequestParam(required = false, defaultValue = "asc", value = "orderBy") String orderBy,
+            @RequestParam(required = false, defaultValue = "false", value = "getAll") Boolean getAll,
+            @RequestParam(required = false, value = "value") String search) {
+        HttpResponse httpResponse = new HttpResponse(
+                HttpStatus.OK.value(),
+                null,
+                productService.listProductByName(pageSize, pageNum, fields, orderBy, getAll, search));
+        return ResponseEntity.status(HttpStatus.OK).body(httpResponse);
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<ProductRespone> DetailsProduct (@PathVariable("id") Optional<Integer> id){
         Product Product = productService.findById(id.get());

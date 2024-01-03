@@ -24,4 +24,6 @@ public interface ProductService {
 
     PaginationResponse listProduct(Integer pageSize, Integer pageNum, String fields, String orderBy, Boolean getAll, Integer categoryId);
 
+    public PaginationResponse listProductByName(Integer pageSize,Integer pageNum,String fields,String orderBy,Boolean getAll,String search);
+
 }

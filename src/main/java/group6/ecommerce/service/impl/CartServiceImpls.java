@@ -27,10 +27,17 @@ public class CartServiceImpls implements CartService {
 
     @Override
     public String addTocart(Cart_Details item, int userId) {
-        ProductDetails productDetails = productDetailsService
-                .findProductDetailsByProductIdAndColornameAndSizename(item.getProduct().getId()
+        ProductDetails productDetails = null;
+        if (productDetailsService.findProductDetailsByProductIdAndColornameAndSizename(item.getProduct().getId()
                         ,item.getColor(),
-                        item.getSize());
+                        item.getSize())!=null) {
+         productDetails = productDetailsService.findProductDetailsByProductIdAndColornameAndSizename(
+                 item.getProduct().getId(),
+                 item.getColor(),
+                 item.getSize());
+        }else{
+            return "Sản Phẩm Không Tồn Tại";
+        }
         String valueItem = item.getProduct().getId()+item.getSize()+item.getColor();
         Users userLogin = userService.findById(userId);
         Cart cart = userLogin.getCart();
@@ -68,7 +75,7 @@ public class CartServiceImpls implements CartService {
         Cart cart = userLogin.getCart();
         if (cart.getListItems().get(itemValue)!=null){
             cart.getListItems().remove(itemValue);
-            cartDetailsRepository.deleteByKey(itemValue);
+            cartDetailsRepository.deleteByKey(itemValue,userLogin.getCart().getCartId());
             return "xóa giỏ hàng thành công";
         }
         return "Không Thấy SP Này";

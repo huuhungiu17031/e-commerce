@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Entity
@@ -30,5 +31,5 @@ public class Order {
     @JoinColumn (name = "UserId")
     private Users userOrder;
     @OneToMany (mappedBy = "ItemOrder")
-    Map<String,Order_Details> listItems;
+    Map<String,Order_Details> listItems = new HashMap<>();
 }

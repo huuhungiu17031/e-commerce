@@ -41,5 +41,8 @@ public class CouponServiceImpls implements CouponService {
         return couponRepository.findAll();
     }
 
-
+    @Override
+    public Coupon findByCode(String code) {
+        return couponRepository.findByCode(code);
+    }
 }

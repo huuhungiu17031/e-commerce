@@ -5,6 +5,9 @@ import group6.ecommerce.payload.response.PaginationResponse;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface ProductService {
     public Product findById(int id);
@@ -15,6 +18,12 @@ public interface ProductService {
     int addNewProduct(Product product);
 
 
+
+    List<Integer> getTopRepurchaseProduct(@Param("year") int year, @Param("month") int month);
+
+
     PaginationResponse listProduct(Integer pageSize, Integer pageNum, String fields, String orderBy, Boolean getAll, Integer categoryId);
+
     public PaginationResponse listProductByName(Integer pageSize,Integer pageNum,String fields,String orderBy,Boolean getAll,String search);
+
 }

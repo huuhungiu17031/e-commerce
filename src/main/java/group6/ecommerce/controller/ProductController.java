@@ -13,8 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping ("product")
@@ -83,4 +84,21 @@ public class ProductController {
         productService.addNewProduct(product);
         return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
+
+    @GetMapping("/admin/product/topRepurchase/{year}/{month}")
+    public ResponseEntity<List<ProductRespone>> getTopRepurchaseProduct(@PathVariable int year, @PathVariable int month) {
+        // Get list id of top 10 repurchase product
+        List<Integer> list = productService.getTopRepurchaseProduct(year, month);
+
+        // Convert list of product ids to list of ProductResponses
+        List<ProductRespone> list1 = list.stream()
+                .map(productId -> productService.findById(productId))
+                .filter(product -> product != null)
+                .map(ProductRespone::new)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(list1, HttpStatus.OK);
+    }
 }
+
+

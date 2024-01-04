@@ -6,9 +6,12 @@ import java.util.stream.Collectors;
 
 import group6.ecommerce.Repository.CartRepository;
 import group6.ecommerce.model.Cart;
+import group6.ecommerce.payload.request.ChangePasswordRequest;
 import group6.ecommerce.service.CartService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -85,4 +88,22 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).get();
     }
 
+    @Override
+    public Boolean changePassword(ChangePasswordRequest changePasswordRequest) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String email = userDetails.getUsername();
+        String oldPassword = changePasswordRequest.getOldPassword();
+        String newPassword = changePasswordRequest.getNewPassword();
+        String confirmPassword = changePasswordRequest.getConfirmPassword();
+
+        Users user = findByEmail(email);
+        if(passwordEncoder.matches(oldPassword, user.getPassword()) && newPassword.equals(confirmPassword)){
+            String encryptedPassword = passwordEncoder.encode(newPassword);
+            user.setPassword(encryptedPassword);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
 }

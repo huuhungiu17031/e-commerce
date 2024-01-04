@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import group6.ecommerce.Repository.CartRepository;
 import group6.ecommerce.model.Cart;
 import group6.ecommerce.payload.request.ChangePasswordRequest;
+import group6.ecommerce.payload.request.UserInfoRequest;
 import group6.ecommerce.service.CartService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -105,5 +106,16 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void update(int id, UserInfoRequest userInfoRequest) {
+        Users user = userRepository.findById(id).get();
+        user.setAddress(userInfoRequest.getAddress());
+        user.setPhone(userInfoRequest.getPhone());
+        user.setCity(userInfoRequest.getCity());
+        user.setDistrict(userInfoRequest.getDistrict());
+        user.setWard(userInfoRequest.getWard());
+        userRepository.save(user);
     }
 }

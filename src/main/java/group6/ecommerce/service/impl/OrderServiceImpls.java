@@ -6,11 +6,18 @@ import group6.ecommerce.Repository.OrderRepository;
 import group6.ecommerce.model.Order;
 import group6.ecommerce.model.Order_Details;
 import group6.ecommerce.model.ProductDetails;
+import group6.ecommerce.payload.response.OrderResponse;
+import group6.ecommerce.payload.response.PaginationResponse;
 import group6.ecommerce.service.CouponService;
 import group6.ecommerce.service.ProductDetailsService;
 import group6.ecommerce.service.OrderService;
+import group6.ecommerce.utils.HandleSort;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -91,5 +98,37 @@ public class OrderServiceImpls implements OrderService {
         }else{
             return validate;
         }
+    }
+
+    @Override
+    public String updateStatus(int orderId, String newStatus) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order != null){
+            order.setStatus(newStatus);
+            orderRepository.save(order);
+            return "Updated Successfully";
+        }else{
+            return "Updated Failed";
+        }
+    }
+
+    @Override
+    public PaginationResponse listOrder(
+            Integer pageSize,
+            Integer pageNum,
+            String fields,
+            String orderBy,
+            Boolean getAll,
+            String status) {
+        Sort sort = HandleSort.buildSortProperties(fields, orderBy);
+        Pageable pageable = PageRequest.of(pageNum, pageSize, sort);
+        Page<Order> pageOrder = orderRepository.findByStatusAndSort(status, pageable);
+        return new PaginationResponse(
+                pageNum,
+                pageSize,
+                pageOrder.getTotalElements(),
+                pageOrder.isLast(),
+                pageOrder.getTotalPages(),
+                pageOrder.getContent().stream().map(order -> new OrderResponse(order)).toList());
     }
 }

@@ -7,4 +7,5 @@ public interface ProductDetailsService {
 
     ProductDetails addNewProductDetail (ProductDetails productDetails);
     ProductDetails findById(Integer id);
+    void deleteById(Integer id);
 }

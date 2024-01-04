@@ -2,6 +2,7 @@ package group6.ecommerce.Repository;
 
 import group6.ecommerce.model.ProductDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,8 @@ public interface ProductDetailsRepository extends JpaRepository<ProductDetails,I
     public ProductDetails findProductDetailsByProductIdAndColornameAndSizename (int productId, String colorName, String sizeName);
 
     ProductDetails saveAndFlush(ProductDetails productDetails);
+    void deleteById(Integer id);
+    @Modifying
+    @Query(value = "delete from product_details where product_id = ?1", nativeQuery = true)
+    void deleteByProductId(Integer productId);
 }

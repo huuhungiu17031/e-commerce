@@ -17,4 +17,5 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
     Page<Product> findByCategoryAndSort(@Param("categoryId") Integer categoryId, Pageable pageable);
 
     Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    void deleteById(Integer id);
 }

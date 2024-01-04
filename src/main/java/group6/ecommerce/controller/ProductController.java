@@ -138,6 +138,8 @@ public class ProductController {
         if(productRequest.getProductDetails() != null){
             for(ProductDetailRequest productDetailRequest : productRequest.getProductDetails()){
                 ProductDetails productDetails = new ProductDetails();
+
+                // Find current product detail in db and update if existed
                 if(productDetailRequest.getProductDetailsId() != null){
                     ProductDetails findProductDetailInDb = productDetailsService.findById(productDetailRequest.getProductDetailsId());
                     productDetails.setProductDetailsId(findProductDetailInDb.getProductDetailsId());
@@ -158,6 +160,11 @@ public class ProductController {
             }
         }
 
+        return ResponseEntity.status(HttpStatus.OK).body("Success");
+    }
+    @RequestMapping(value = "delete/{id}",method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") Integer id){
+        productService.deleteProduct(id);
         return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
 }

@@ -1,5 +1,6 @@
 package group6.ecommerce.service.impl;
 
+import group6.ecommerce.Repository.ProductDetailsRepository;
 import group6.ecommerce.Repository.ProductRepository;
 import group6.ecommerce.model.Product;
 import group6.ecommerce.payload.response.PaginationResponse;
@@ -12,11 +13,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProductServiceImpls implements ProductService {
     private final ProductRepository productRepository;
+    private final ProductDetailsRepository productDetailsRepository;
 
     @Override
     public Product findById(int id) {
@@ -72,5 +76,11 @@ public class ProductServiceImpls implements ProductService {
                 pageProduct.isLast(),
                 pageProduct.getTotalPages(),
                 pageProduct.getContent().stream().map(product -> new ProductRespone(product)).toList());
+    }
+
+    @Override
+    public void deleteProduct(Integer id) {
+        productDetailsRepository.deleteByProductId(id);
+        productRepository.deleteById(id);
     }
 }

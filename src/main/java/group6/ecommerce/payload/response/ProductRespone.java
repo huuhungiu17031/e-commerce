@@ -32,6 +32,7 @@ public class ProductRespone {
         List<ProductDetailsRespone> listProductDetails = new ArrayList<>();
         p.getListProductDetails().stream().forEach(e -> listProductDetails.add(new ProductDetailsRespone(e)));
         this.productDetails = listProductDetails;
+        this.material = p.getMaterial();
     }
 
     public boolean isOutOfStock (){

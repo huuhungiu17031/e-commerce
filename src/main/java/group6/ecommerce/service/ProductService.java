@@ -5,15 +5,15 @@ import group6.ecommerce.payload.response.PaginationResponse;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 
 public interface ProductService {
     public Product findById(int id);
 
     Page<Product> findByPage(Pageable pages);
-
-
     Product addNewProduct(Product product);
 
     PaginationResponse listProduct(Integer pageSize, Integer pageNum, String fields, String orderBy, Boolean getAll, Integer categoryId);
     public PaginationResponse listProductByName(Integer pageSize,Integer pageNum,String fields,String orderBy,Boolean getAll,String search);
+    void deleteProduct (Integer id);
 }

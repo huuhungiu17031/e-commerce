@@ -86,7 +86,7 @@ public class ProductController {
     }
 
     @GetMapping("topRepurchase/{year}/{month}")
-    public ResonseEntity<List<ProductRespone>> getTopRepurchaseProduct(@PathVariable int year, @PathVariable int month) {
+    public ResponseEntity<List<ProductRespone>> getTopRepurchaseProduct(@PathVariable int year, @PathVariable int month) {
         // Get list id of top 10 repurchase product
         List<Integer> list = productService.getTopRepurchaseProduct(year, month);
 

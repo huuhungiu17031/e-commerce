@@ -4,6 +4,7 @@ import group6.ecommerce.configuration.VnpayConfig;
 import group6.ecommerce.model.Order;
 import group6.ecommerce.model.Users;
 import group6.ecommerce.payload.request.OrderRequest;
+import group6.ecommerce.payload.response.HttpResponse;
 import group6.ecommerce.payload.response.CheckOutRespone;
 import group6.ecommerce.service.OrderService;
 import group6.ecommerce.service.ProductDetailsService;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +45,33 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(status);
         }
     }
+
+    @PutMapping("updateStatus/{orderId}/{newStatus}")
+    public ResponseEntity<String> updateStatus(@PathVariable int orderId, @PathVariable String newStatus) {
+        String result = orderService.updateStatus(orderId, newStatus);
+        if (result.equalsIgnoreCase("Updated Successfully")) {
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        }
+
+    }
+
+    @GetMapping
+    public ResponseEntity<HttpResponse> getOrder(
+            @RequestParam(required = false, defaultValue = "12", value = "pageSize") Integer pageSize,
+            @RequestParam(required = false, defaultValue = "0", value = "pageNum") Integer pageNum,
+            @RequestParam(required = false, defaultValue = "id", value = "fields") String fields,
+            @RequestParam(required = false, defaultValue = "asc", value = "orderBy") String orderBy,
+            @RequestParam(required = false, defaultValue = "false", value = "getAll") Boolean getAll,
+            @RequestParam(required = false, value = "status") String status) {
+        HttpResponse httpResponse = new HttpResponse(
+                HttpStatus.OK.value(),
+                null,
+                orderService.listOrder(pageSize, pageNum, fields, orderBy, getAll, status));
+        return ResponseEntity.status(HttpStatus.OK).body(httpResponse);
+    }
+
     @GetMapping("/paying/{id}")
     public String paying(@PathVariable("id") int id,
                          @RequestParam("vnp_Amount") String amount,
@@ -119,5 +148,4 @@ public class OrderController {
             return "redirect:https://sandbox.vnpayment.vn/paymentv2/Payment/Error.html?code=70";
         }
     }
-
 }

@@ -5,13 +5,20 @@ import group6.ecommerce.Repository.OrderDetailsRepository;
 import group6.ecommerce.Repository.OrderRepository;
 import group6.ecommerce.model.Order;
 import group6.ecommerce.model.Order_Details;
+import group6.ecommerce.model.Product;
 import group6.ecommerce.model.ProductDetails;
+
 import group6.ecommerce.payload.response.OrderResponse;
 import group6.ecommerce.payload.response.PaginationResponse;
 import group6.ecommerce.service.CouponService;
 import group6.ecommerce.service.ProductDetailsService;
 import group6.ecommerce.service.OrderService;
 import group6.ecommerce.utils.HandleSort;
+
+import group6.ecommerce.payload.response.CheckOutRespone;
+
+import group6.ecommerce.service.ProductService;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +28,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
@@ -33,6 +41,8 @@ public class OrderServiceImpls implements OrderService {
     private final CartDetailsRepository cartDetailsRepository;
 
     private final OrderDetailsRepository orderDetailsRepository;
+
+    private final ProductService productService;
     public String validate (Order order){
         AtomicBoolean checkQuantity = new AtomicBoolean(true);
         if (order.getUserOrder().getCart().getListItems().size() <=0) {
@@ -59,7 +69,7 @@ public class OrderServiceImpls implements OrderService {
     }
 
     @Override
-    public String CheckOut(Order order) {
+    public CheckOutRespone CheckOut(Order order) {
         if (!order.getCoupon().equalsIgnoreCase("")) {
             if (couponService.findByCode(order.getCoupon()) == null ||
                     couponService.findByCode(order.getCoupon()).getDiscount() <= 0) {
@@ -88,15 +98,25 @@ public class OrderServiceImpls implements OrderService {
                 productDetailsService.save(productDetails);
             });
             if (order.getPayment().equalsIgnoreCase("shipcod")){
-                orderRepository.save(order);
-                return "Đặt Hàng Thành Công";
+                Order o = orderRepository.save(order);
+                CheckOutRespone rp = new CheckOutRespone();
+                rp.setOrderId(o.getId());
+                rp.setStatus("Đặt Hàng Thành Công");
+                return rp;
             }else{
                 order.setStatus("waitPay");
                 orderRepository.save(order);
-                return "waitPay";
+                Order o = orderRepository.save(order);
+                CheckOutRespone rp = new CheckOutRespone();
+                rp.setOrderId(o.getId());
+                rp.setStatus("waitPayVnpay");
+                return rp;
             }
         }else{
-            return validate;
+                CheckOutRespone rp = new CheckOutRespone();
+                rp.setOrderId(-99);
+                rp.setStatus(validate);
+                return rp;
         }
     }
 
@@ -130,5 +150,31 @@ public class OrderServiceImpls implements OrderService {
                 pageOrder.isLast(),
                 pageOrder.getTotalPages(),
                 pageOrder.getContent().stream().map(order -> new OrderResponse(order)).toList());
+    }
+  
+    public Order findById(int id) {
+        return orderRepository.findById(id).get();
+    }
+
+    @Override
+    public Order save(Order order) {
+       return  orderRepository.save(order);
+    }
+
+    @Override
+    public void cancel(Order order) {
+        Map<String, Order_Details> items = order.getListItems();
+        items.values().stream().forEach(item->{
+            Product p = productService.findById(item.getProduct().getId());
+            for (ProductDetails productdetails : p.getListProductDetails()){
+                if ((productdetails.getProducts().getId()+""+productdetails.getSize()+productdetails.getColor()).
+                        equalsIgnoreCase(item.getProduct().getId()+item.getSize()+item.getColor())){
+                    productdetails.setQuantity(productdetails.getQuantity()+item.getAmount());
+                    productDetailsService.save(productdetails);
+                }
+            }
+        });
+        order.setStatus("cancel");
+        orderRepository.save(order);
     }
 }

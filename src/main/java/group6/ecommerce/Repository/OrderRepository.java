@@ -11,6 +11,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order,Integer> {
+
     @Query("SELECT o FROM Order o WHERE (:status IS NULL OR o.Status = :status)")
     Page<Order> findByStatusAndSort(@Param("status") String status, Pageable pageable);
+  
+    Order save(Order order);
+
 }

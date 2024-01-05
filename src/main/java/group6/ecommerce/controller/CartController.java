@@ -1,19 +1,26 @@
 package group6.ecommerce.controller;
 
+import group6.ecommerce.configuration.VnpayConfig;
 import group6.ecommerce.model.Cart_Details;
+import group6.ecommerce.model.Order;
 import group6.ecommerce.model.Users;
 import group6.ecommerce.payload.request.CartDetailsRequest;
 import group6.ecommerce.payload.response.CartRespone;
-import group6.ecommerce.service.CartService;
-import group6.ecommerce.service.ProductDetailsService;
-import group6.ecommerce.service.ProductService;
-import group6.ecommerce.service.UserService;
+import group6.ecommerce.service.*;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @RestController
 @RequestMapping("cart")
@@ -23,6 +30,7 @@ public class CartController {
     private final ProductDetailsService productDetailsService;
     private final UserService userService;
     private final ProductService productService;
+    private final OrderService orderService;
 
     @GetMapping
     public ResponseEntity<CartRespone> cart (){
@@ -58,5 +66,7 @@ public class CartController {
         String status = cartService.removeToCart(cartDetailsRequest.getCartDetails(), principal.getId());
         return ResponseEntity.status(HttpStatus.OK).body(status);
     }
+
+
 }
 

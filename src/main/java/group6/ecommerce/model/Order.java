@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
 @Table (name = "Orders")
@@ -29,6 +31,14 @@ public class Order {
     @ManyToOne
     @JoinColumn (name = "UserId")
     private Users userOrder;
-    @OneToMany (mappedBy = "ItemOrder")
-    Map<String,Order_Details> listItems;
+    @OneToMany (mappedBy = "ItemOrder", fetch = FetchType.EAGER)
+    Map<String,Order_Details> listItems = new HashMap<>();
+
+    public int getTotalPrice (){
+        AtomicInteger price = new AtomicInteger();
+        listItems.values().stream().forEach(o -> {
+            price.addAndGet(o.getProduct().getPrice() * o.getAmount());
+        });
+        return price.get();
+    }
 }

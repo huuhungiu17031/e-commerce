@@ -75,7 +75,7 @@ public class CartServiceImpls implements CartService {
         Cart cart = userLogin.getCart();
         if (cart.getListItems().get(itemValue)!=null){
             cart.getListItems().remove(itemValue);
-            cartDetailsRepository.deleteByKey(itemValue);
+            cartDetailsRepository.deleteByKey(itemValue,userLogin.getCart().getCartId());
             return "xóa giỏ hàng thành công";
         }
         return "Không Thấy SP Này";

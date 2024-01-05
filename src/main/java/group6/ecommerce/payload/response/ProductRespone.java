@@ -3,6 +3,7 @@ import group6.ecommerce.model.Product;
 import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 public class ProductRespone {
@@ -36,6 +37,14 @@ public class ProductRespone {
     }
 
     public boolean isOutOfStock (){
-        return productDetails.isEmpty();
+        AtomicInteger quantity = new AtomicInteger();
+
+        productDetails.stream().forEach(item -> {
+            quantity.addAndGet(item.getQuantity());
+        });
+        if (quantity.get() == 0) {
+            return true;
+        }
+        return false;
     }
 }

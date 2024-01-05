@@ -1,9 +1,15 @@
 package group6.ecommerce.payload.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import group6.ecommerce.model.Category;
+import group6.ecommerce.model.ProductDetails;
+import group6.ecommerce.model.Type;
 
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter @Setter @Data
 public class ProductRequest {
@@ -12,12 +18,9 @@ public class ProductRequest {
     private int dimension;
     private int weight;
     private String material;
-    private String categoryName;
+    private String category;
     private String imageUrls;
-    private String typeName;
+    private String type;
     private String description;
-    private String sizeName;
-    private String colorName;
-    private int quantity;
-    private boolean outOfStock;
+    private List<ProductDetailRequest> productDetails;
 }

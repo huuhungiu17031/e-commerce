@@ -4,6 +4,7 @@ import group6.ecommerce.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,10 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Integer> {
+<<<<<<< HEAD
+    Product saveAndFlush(Product product);
+//    @Modifying(clearAutomatically = true)
+=======
     public Product saveAndFlush(Product product);
 
 
@@ -37,9 +42,14 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
 
 
+>>>>>>> 8dbf8dea13f168e5892b23ef9bf7fb486404a6a5
     @Query("SELECT p FROM Product p WHERE (:categoryId IS NULL OR p.category.id = :categoryId)")
     Page<Product> findByCategoryAndSort(@Param("categoryId") Integer categoryId, Pageable pageable);
 
     Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
+<<<<<<< HEAD
+    void deleteById(Integer id);
+=======
 
+>>>>>>> 8dbf8dea13f168e5892b23ef9bf7fb486404a6a5
 }

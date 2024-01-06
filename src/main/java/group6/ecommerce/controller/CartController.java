@@ -6,6 +6,7 @@ import group6.ecommerce.model.Order;
 import group6.ecommerce.model.Users;
 import group6.ecommerce.payload.request.CartDetailsRequest;
 import group6.ecommerce.payload.response.CartRespone;
+import group6.ecommerce.payload.response.addCartRespone;
 import group6.ecommerce.service.*;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
@@ -42,7 +43,7 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.OK).body(cartRespone);
     }
     @PostMapping
-    public ResponseEntity<String> addToCart (@RequestBody CartDetailsRequest cartDetailsRequest){
+    public ResponseEntity<addCartRespone> addToCart (@RequestBody CartDetailsRequest cartDetailsRequest){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Users principal = (Users) authentication.getPrincipal();
         Users userLogin = userService.findById(principal.getId());
@@ -51,9 +52,9 @@ public class CartController {
         Cart_Details item = cartDetailsRequest.getCartDetails();
         String staus = cartService.addTocart(item,userLogin.getId());
         if (staus.equalsIgnoreCase("Thêm Vào Giỏ Hàng Thành Công")) {
-            return ResponseEntity.status(HttpStatus.OK).body(staus);
+            return ResponseEntity.status(HttpStatus.OK).body(new addCartRespone(staus));
         }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(staus);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new addCartRespone(staus));
         }
     }
 

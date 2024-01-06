@@ -37,7 +37,7 @@ public class ProductServiceImpls implements ProductService {
 
     @Override
     public Product addNewProduct(Product product) {
-        return productRepository.saveAndFlush(product);
+        return productRepository.save(product);
     }
 
 
@@ -65,14 +65,14 @@ public class ProductServiceImpls implements ProductService {
     public List<Integer> getTopRepurchaseProduct(int year, int month) {
         return productRepository.getTopRepurchaseProduct(year, month);
     }
-<<<<<<< HEAD
+
 
     @Override
     public void deleteProduct(Integer id) {
         productDetailsRepository.deleteByProductId(id);
         productRepository.deleteById(id);
     }
-=======
+
     @Override
     public PaginationResponse listProductByName (
                 Integer pageSize,
@@ -94,5 +94,5 @@ public class ProductServiceImpls implements ProductService {
 
     }
 
->>>>>>> 8dbf8dea13f168e5892b23ef9bf7fb486404a6a5
+
 }

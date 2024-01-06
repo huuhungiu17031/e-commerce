@@ -10,7 +10,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class ProductDetails {
+public class    ProductDetails {
     @Id
     @Column (name = "ProductDetailsId")
     @GeneratedValue (strategy = GenerationType.IDENTITY)

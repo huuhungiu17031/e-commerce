@@ -3,6 +3,7 @@ package group6.ecommerce.controller;
 
 import group6.ecommerce.model.Users;
 import group6.ecommerce.payload.request.ChangePasswordRequest;
+import group6.ecommerce.payload.request.UserInfoRequest;
 import group6.ecommerce.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,4 +57,20 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body("Wrong old password or the new password and confirm password do not match");
         }
     }
+
+    @PutMapping("update/{id}")
+    public ResponseEntity<String> update(@PathVariable("id") int id, @RequestBody UserInfoRequest userInfoRequest){
+        try{
+            Users user = userService.findById(id);
+            if(user == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
+            }
+            userService.update(id, userInfoRequest);
+            return ResponseEntity.status(HttpStatus.OK).body("Update successfully");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Update failed");
+        }
+    }
+
 }

@@ -6,6 +6,14 @@ plugins {
 
 group = 'group6'
 version = '0.0.1-SNAPSHOT'
+jar {
+	manifest {
+		attributes 'Implementation-Title': 'Gradle Quickstart',
+				'Implementation-Version': version,
+				'Main-Class': 'group6.ecommerce.ECommerceApplication'
+	}
+}
+
 
 java {
 	sourceCompatibility = '17'

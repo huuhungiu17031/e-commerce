@@ -19,7 +19,6 @@ public class ProductDetailsServiceImpls implements ProductDetailsService {
     }
 
     @Override
-<<<<<<< HEAD
     public ProductDetails addNewProductDetail(ProductDetails productDetails) {
         return productDetailsRepository.saveAndFlush(productDetails);
     }
@@ -32,9 +31,7 @@ public class ProductDetailsServiceImpls implements ProductDetailsService {
     @Override
     public void deleteById(Integer id) {
         productDetailsRepository.deleteById(id);
-=======
-    public void save(ProductDetails details) {
+    }    public void save(ProductDetails details) {
         productDetailsRepository.save(details);
->>>>>>> 8dbf8dea13f168e5892b23ef9bf7fb486404a6a5
     }
 }

@@ -13,13 +13,7 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Integer> {
-<<<<<<< HEAD
     Product saveAndFlush(Product product);
-//    @Modifying(clearAutomatically = true)
-=======
-    public Product saveAndFlush(Product product);
-
-
     @Query (value = "select * from product \n" +
             "where product_id in (select distinct product_id \n" +
             "from product join category on product.category_id = category.category_id \n" +
@@ -42,14 +36,9 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
 
 
->>>>>>> 8dbf8dea13f168e5892b23ef9bf7fb486404a6a5
     @Query("SELECT p FROM Product p WHERE (:categoryId IS NULL OR p.category.id = :categoryId)")
     Page<Product> findByCategoryAndSort(@Param("categoryId") Integer categoryId, Pageable pageable);
 
     Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
-<<<<<<< HEAD
     void deleteById(Integer id);
-=======
-
->>>>>>> 8dbf8dea13f168e5892b23ef9bf7fb486404a6a5
 }

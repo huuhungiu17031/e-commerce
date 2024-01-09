@@ -14,7 +14,6 @@ public class OrderDetailsResponse {
     private int quantity;
     private int productId;
 
-
     public OrderDetailsResponse(Order_Details orderDetails){
         this.orderDetailsId = orderDetails.getId();
         this.size = orderDetails.getSize();

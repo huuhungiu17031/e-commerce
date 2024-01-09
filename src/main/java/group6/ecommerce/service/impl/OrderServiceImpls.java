@@ -28,6 +28,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -176,5 +178,14 @@ public class OrderServiceImpls implements OrderService {
         });
         order.setStatus("cancel");
         orderRepository.save(order);
+    }
+
+    @Override
+    public List<OrderResponse> findOrderByUserId(int userId) {
+        List<OrderResponse> order = new ArrayList<>();
+        orderRepository.findOrderByUserId(userId).stream().forEach(item -> {
+            order.add(new OrderResponse(item));
+        });
+        return order;
     }
 }

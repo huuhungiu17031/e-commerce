@@ -28,9 +28,9 @@ public class PaymentVnpayController {
     @GetMapping("/createPaymentVnpay")
     public ResponseEntity<?> createPayment(HttpServletRequest request, @RequestParam("oId") int oid) throws UnsupportedEncodingException {
         Order order = orderService.findById(oid);
-        String vnp_Returnurl = WebConfig.webUrl+"/api/order/paying/"+oid;
+        String vnp_Returnurl = WebConfig.webUrl+"/checkout?"+oid;
         if (order != null && order.getPayment().equalsIgnoreCase("vnpay")) {
-            long amount = (long)order.getTotalPrice()* 100;
+            long amount = (long)order.getTotalPrice()* 100*23000;
             System.out.println(amount);
             String vnp_TxnRef = String.valueOf(order.getId());
 

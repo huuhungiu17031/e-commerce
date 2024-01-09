@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Integer> {
-
+    Product saveAndFlush(Product product);
     @Query (value = "select * from product \n" +
             "where product_id in (select distinct product_id \n" +
             "from product join category on product.category_id = category.category_id \n" +

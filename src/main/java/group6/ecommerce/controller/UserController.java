@@ -4,6 +4,8 @@ package group6.ecommerce.controller;
 import group6.ecommerce.model.Users;
 import group6.ecommerce.payload.request.ChangePasswordRequest;
 import group6.ecommerce.payload.request.UserInfoRequest;
+import group6.ecommerce.payload.response.HttpResponse;
+import group6.ecommerce.payload.response.UserDetailsResponse;
 import group6.ecommerce.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("Register successfully");
     }
 
+    @GetMapping("getUserByEmail/{email}")
+    public ResponseEntity<UserDetailsResponse> findUserByEmail(@PathVariable String email){
+        Users user = userService.findByEmail(email);
+        UserDetailsResponse userDetailsResponse = new UserDetailsResponse(user);
+        return ResponseEntity.status(HttpStatus.OK).body(userDetailsResponse);
+    }
+
     @PostMapping("forgetPassword/{email}")
     public ResponseEntity<String> forgetPassword(@PathVariable String email){
         Users users = userService.findByEmail(email);
@@ -46,28 +55,34 @@ public class UserController {
     }
 
     @PostMapping("changePassword")
-    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+    public ResponseEntity<HttpResponse> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
         Boolean changePassword = userService.changePassword(changePasswordRequest);
         if(changePassword){
-            return ResponseEntity.status(HttpStatus.OK).body("Change password successfully");
+            return ResponseEntity.status(HttpStatus.OK).body(new HttpResponse(HttpStatus.OK.value(),
+                    "Change password successfully",null));
         }
         else {
-            return ResponseEntity.status(HttpStatus.OK).body("Wrong old password or the new password and confirm password do not match");
+            return ResponseEntity.status(HttpStatus.OK).body(new HttpResponse(HttpStatus.OK.value(),
+                    "Wrong old password or the new password and confirm password do not match",null));
         }
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<String> update(@PathVariable("id") int id, @RequestBody UserInfoRequest userInfoRequest){
+    public ResponseEntity<HttpResponse> update(@PathVariable("id") int id, @RequestBody UserInfoRequest userInfoRequest){
         try{
-            Users user = userService.findById(id);
+            Users user = userService.findById(userInfoRequest.getUserId());
+
             if(user == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
+                return ResponseEntity.status(HttpStatus.OK).body(new HttpResponse(HttpStatus.OK.value(),
+                        "User not found",null));
             }
-            userService.update(id, userInfoRequest);
-            return ResponseEntity.status(HttpStatus.OK).body("Update successfully");
+            userService.update(userInfoRequest.getUserId(), userInfoRequest);
+            return ResponseEntity.status(HttpStatus.OK).body(new HttpResponse(HttpStatus.OK.value(),
+                    "Update successfully",null));
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Update failed");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HttpResponse(HttpStatus.BAD_REQUEST.value(),
+                    "Update failed",null));
         }
     }
 

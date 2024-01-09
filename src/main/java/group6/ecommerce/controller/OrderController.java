@@ -6,6 +6,8 @@ import group6.ecommerce.model.Users;
 import group6.ecommerce.payload.request.OrderRequest;
 import group6.ecommerce.payload.response.HttpResponse;
 import group6.ecommerce.payload.response.CheckOutRespone;
+import group6.ecommerce.payload.response.OrderResponse;
+import group6.ecommerce.payload.response.addCartRespone;
 import group6.ecommerce.service.OrderService;
 import group6.ecommerce.service.ProductDetailsService;
 import group6.ecommerce.service.UserService;
@@ -73,21 +75,21 @@ public class OrderController {
     }
 
     @GetMapping("/paying/{id}")
-    public String paying(@PathVariable("id") int id,
-                         @RequestParam("vnp_Amount") String amount,
-                         @RequestParam("vnp_BankCode") String bankcode,
-                         @RequestParam("vnp_CardType") String cardtype,
-                         @RequestParam("vnp_OrderInfo") String orderInfo,
-                         @RequestParam("vnp_PayDate") String date,
-                         @RequestParam("vnp_ResponseCode") String code,
-                         @RequestParam("vnp_TmnCode") String tmncode,
-                         @RequestParam("vnp_TransactionNo") String transactionno,
-                         @RequestParam("vnp_TransactionStatus") String status,
-                         @RequestParam("vnp_TxnRef") String txnref,
-                         @RequestParam("vnp_SecureHash") String hash,
-                         @RequestParam(name = "vnp_BankTranNo", defaultValue = "") String tranno,
-                         Model model,
-                         HttpSession session) throws UnsupportedEncodingException, MessagingException {
+    public ResponseEntity<addCartRespone> paying(@PathVariable("id") int id,
+                                                 @RequestParam("vnp_Amount") String amount,
+                                                 @RequestParam("vnp_BankCode") String bankcode,
+                                                 @RequestParam("vnp_CardType") String cardtype,
+                                                 @RequestParam("vnp_OrderInfo") String orderInfo,
+                                                 @RequestParam("vnp_PayDate") String date,
+                                                 @RequestParam("vnp_ResponseCode") String code,
+                                                 @RequestParam("vnp_TmnCode") String tmncode,
+                                                 @RequestParam("vnp_TransactionNo") String transactionno,
+                                                 @RequestParam("vnp_TransactionStatus") String status,
+                                                 @RequestParam("vnp_TxnRef") String txnref,
+                                                 @RequestParam("vnp_SecureHash") String hash,
+                                                 @RequestParam(name = "vnp_BankTranNo", defaultValue = "") String tranno,
+                                                 Model model,
+                                                 HttpSession session) throws UnsupportedEncodingException, MessagingException {
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Amount", amount);
         vnp_Params.put("vnp_BankCode", bankcode);
@@ -138,14 +140,19 @@ public class OrderController {
                 orderService.save(order);
 
 
-                return "Thanh Toán Thành Công";
+                return ResponseEntity.status(HttpStatus.OK).body(new addCartRespone("Thanh Toán Thành Công"));
             } else {
                 order.setPayment("unpaid");
                 orderService.cancel(order);
-                return "Đơn Hàng Đã Hủy";
+                return ResponseEntity.status(HttpStatus.OK).body(new addCartRespone("Đơn Hàng Đã Hủy"));
             }
         } else {
-            return "redirect:https://sandbox.vnpayment.vn/paymentv2/Payment/Error.html?code=70";
+            return ResponseEntity.status(HttpStatus.OK).body(new addCartRespone("https://sandbox.vnpayment.vn/paymentv2/Payment/Error.html?code=70"));
         }
+    }
+
+    @GetMapping("{userid}")
+    public List<OrderResponse> findOrdersByUserId(@PathVariable("userid") int userid){
+        return orderService.findOrderByUserId(userid);
     }
 }

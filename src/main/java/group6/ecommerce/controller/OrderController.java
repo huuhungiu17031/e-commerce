@@ -6,6 +6,7 @@ import group6.ecommerce.model.Users;
 import group6.ecommerce.payload.request.OrderRequest;
 import group6.ecommerce.payload.response.HttpResponse;
 import group6.ecommerce.payload.response.CheckOutRespone;
+import group6.ecommerce.payload.response.OrderResponse;
 import group6.ecommerce.payload.response.addCartRespone;
 import group6.ecommerce.service.OrderService;
 import group6.ecommerce.service.ProductDetailsService;
@@ -146,5 +147,10 @@ public class OrderController {
         } else {
             return  ResponseEntity.status(HttpStatus.OK).body(new addCartRespone("https://sandbox.vnpayment.vn/paymentv2/Payment/Error.html?code=70"));
         }
+    }
+
+    @GetMapping("{userid}")
+    public List<OrderResponse> findOrdersByUserId(@PathVariable("userid") int userid){
+        return orderService.findOrderByUserId(userid);
     }
 }

@@ -2,7 +2,6 @@ package group6.ecommerce.service.impl;
 
 import group6.ecommerce.Repository.CouponRepository;
 import group6.ecommerce.model.Coupon;
-import group6.ecommerce.payload.response.CouponResponse;
 import group6.ecommerce.service.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

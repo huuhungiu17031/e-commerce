@@ -1,6 +1,5 @@
 package group6.ecommerce.controller;
 
-import group6.ecommerce.Repository.CouponRepository;
 import group6.ecommerce.model.Coupon;
 import group6.ecommerce.payload.request.CouponRequest;
 import group6.ecommerce.service.CouponService;
@@ -16,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CouponController {
     private final CouponService couponService;
-    private final CouponRepository couponRepository;
 
     @PostMapping("/add")
     public ResponseEntity<String> addCoupon(@RequestBody CouponRequest couponRequest){

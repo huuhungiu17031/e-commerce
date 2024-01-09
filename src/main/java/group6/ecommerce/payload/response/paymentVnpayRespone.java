@@ -1,8 +1,6 @@
 package group6.ecommerce.payload.response;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter

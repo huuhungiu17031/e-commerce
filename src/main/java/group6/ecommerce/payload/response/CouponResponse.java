@@ -2,8 +2,6 @@ package group6.ecommerce.payload.response;
 
 import group6.ecommerce.model.Coupon;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class CouponResponse {

@@ -1,6 +1,5 @@
 package group6.ecommerce.service;
 
-import group6.ecommerce.model.Cart_Details;
 import group6.ecommerce.model.ProductDetails;
 
 public interface ProductDetailsService {

@@ -8,7 +8,6 @@ import group6.ecommerce.Repository.CartRepository;
 import group6.ecommerce.model.Cart;
 import group6.ecommerce.payload.request.ChangePasswordRequest;
 import group6.ecommerce.payload.request.UserInfoRequest;
-import group6.ecommerce.service.CartService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +26,6 @@ import group6.ecommerce.payload.request.UserRequest;
 import group6.ecommerce.payload.response.JwtResponse;
 import group6.ecommerce.service.JwtService;
 import group6.ecommerce.service.UserService;
-import group6.ecommerce.utils.Constant;
 import lombok.RequiredArgsConstructor;
 
 @Service

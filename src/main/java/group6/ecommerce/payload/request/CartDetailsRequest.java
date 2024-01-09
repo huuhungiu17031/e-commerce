@@ -1,13 +1,9 @@
 package group6.ecommerce.payload.request;
 
-import group6.ecommerce.model.Cart;
 import group6.ecommerce.model.Cart_Details;
 import group6.ecommerce.model.Product;
 import group6.ecommerce.model.Users;
-import group6.ecommerce.service.ProductService;
-import group6.ecommerce.service.UserService;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Setter

@@ -1,8 +1,6 @@
 package group6.ecommerce.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
 import lombok.Setter;
 
 @Entity

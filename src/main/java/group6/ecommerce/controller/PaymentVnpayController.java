@@ -30,13 +30,9 @@ public class PaymentVnpayController {
         Order order = orderService.findById(oid);
         String vnp_Returnurl = WebConfig.webUrl+"/api/order/paying/"+oid;
         if (order != null && order.getPayment().equalsIgnoreCase("vnpay")) {
-            String vnp_Version = "2.1.0";
-            String vnp_Command = "pay";
             long amount = (long)order.getTotalPrice()* 100;
             System.out.println(amount);
             String vnp_TxnRef = String.valueOf(order.getId());
-
-            String vnp_TmnCode = VnpayConfig.vnp_TmnCode;
 
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", "2.1.0");

@@ -1,15 +1,11 @@
 package group6.ecommerce.payload.request;
 
-import group6.ecommerce.model.Cart;
 import group6.ecommerce.model.Order;
-import group6.ecommerce.model.Order_Details;
 import group6.ecommerce.model.Users;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Setter
 @Getter

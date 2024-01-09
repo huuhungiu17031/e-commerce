@@ -1,7 +1,6 @@
 package group6.ecommerce.service.impl;
 
 import group6.ecommerce.Repository.ProductDetailsRepository;
-import group6.ecommerce.model.Cart_Details;
 import group6.ecommerce.model.ProductDetails;
 import group6.ecommerce.service.ProductDetailsService;
 import lombok.RequiredArgsConstructor;

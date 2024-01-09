@@ -7,8 +7,6 @@ import group6.ecommerce.payload.request.UserInfoRequest;
 import group6.ecommerce.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import group6.ecommerce.payload.request.LoginRequest;

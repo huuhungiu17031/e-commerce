@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderDetailsResponse {
     private int orderDetailsId;
+    private ProductRespone item;
     private String size;
     private String color;
     private int quantity;
@@ -21,5 +22,6 @@ public class OrderDetailsResponse {
         this.color = orderDetails.getColor();
         this.quantity = orderDetails.getAmount();
         this.productId = orderDetails.getProduct().getId();
+        this.item = new ProductRespone(orderDetails.getProduct());
     }
 }

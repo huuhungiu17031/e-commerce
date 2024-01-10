@@ -3,6 +3,8 @@ package group6.ecommerce.model;
 import jakarta.persistence.*;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Setter
 public class Users {
@@ -29,7 +31,8 @@ public class Users {
     private String ward;
     @OneToOne(mappedBy = "UserCart", fetch = FetchType.EAGER)
     private Cart cart;
-
+    @OneToMany (mappedBy = "userOrder", fetch = FetchType.EAGER)
+    List<Order> listOrder;
     public Integer getId() {
         return id;
     }
@@ -68,5 +71,9 @@ public class Users {
 
     public Cart getCart() {
         return cart;
+    }
+
+    public List<Order> getListOrder() {
+        return listOrder;
     }
 }

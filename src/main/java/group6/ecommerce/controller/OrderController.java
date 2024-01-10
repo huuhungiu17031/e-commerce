@@ -34,8 +34,9 @@ public class OrderController {
     private final OrderService orderService;
     private final UserService userService;
     private final ProductDetailsService productDetails;
-    @PostMapping ("checkout")
-    public ResponseEntity<CheckOutRespone> CheckOut (@RequestBody OrderRequest order){
+
+    @PostMapping("checkout")
+    public ResponseEntity<CheckOutRespone> CheckOut(@RequestBody OrderRequest order) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Users principal = (Users) authentication.getPrincipal();
         Users userLogin = userService.findById(principal.getId());
@@ -43,7 +44,7 @@ public class OrderController {
         CheckOutRespone status = orderService.CheckOut(order.getOrder());
         if (status.getStatus().equalsIgnoreCase("Đặt Hàng Thành Công") || status.getStatus().equalsIgnoreCase("waitPayVnpay")) {
             return ResponseEntity.status(HttpStatus.OK).body(status);
-        }else{
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(status);
         }
     }
@@ -53,7 +54,7 @@ public class OrderController {
         String result = orderService.updateStatus(orderId, newStatus);
         if (result.equalsIgnoreCase("Updated Successfully")) {
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        }else{
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
 
@@ -152,15 +153,17 @@ public class OrderController {
     }
 
     @GetMapping("done")
-    public List<OrderResponse> getAllOrderDone(){
+    public List<OrderResponse> getAllOrderDone() {
         return orderService.listOrder();
     }
 
     @GetMapping("myorder")
-    public List<OrderResponse> findOrdersByUserId(){
+    public List<OrderResponse> findOrdersByUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Users principal = (Users) authentication.getPrincipal();
         Users userLogin = userService.findById(principal.getId());
         return orderService.findOrderByUserId(userLogin);
     }
+
 }
+

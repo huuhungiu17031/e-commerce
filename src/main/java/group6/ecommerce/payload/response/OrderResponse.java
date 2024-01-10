@@ -18,6 +18,8 @@ public class OrderResponse {
     private UserDetailsResponse userOrder;
     private List<OrderDetailsResponse> orderDetails;
 
+    private  int totalOrder;
+
     public OrderResponse(Order o) {
         this.id = o.getId();
         this.coupon = o.getCoupon();
@@ -28,5 +30,6 @@ public class OrderResponse {
         List<OrderDetailsResponse> listOrderDetails = new ArrayList<>();
         o.getListItems().values().stream().forEach(e -> listOrderDetails.add(new OrderDetailsResponse(e)));
         this.orderDetails = listOrderDetails;
+        this.totalOrder = o.getTotalPrice();
     }
 }

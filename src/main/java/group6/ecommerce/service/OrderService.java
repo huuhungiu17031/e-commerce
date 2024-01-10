@@ -23,4 +23,6 @@ public interface OrderService {
 
     public List<OrderResponse> findOrderByUserId(int userId);
 
+
+    List<OrderResponse> listOrder();
 }

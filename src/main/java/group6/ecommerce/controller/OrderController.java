@@ -49,7 +49,7 @@ public class OrderController {
     }
 
     @PutMapping("updateStatus/{orderId}/{newStatus}")
-    public ResponseEntity<String> updateStatus(@PathVariable int orderId, @PathVariable String newStatus) {
+    public ResponseEntity<String> updateStatus(@PathVariable("orderId") int orderId, @PathVariable("newStatus") String newStatus) {
         String result = orderService.updateStatus(orderId, newStatus);
         if (result.equalsIgnoreCase("Updated Successfully")) {
             return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -149,6 +149,11 @@ public class OrderController {
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(new addCartRespone("https://sandbox.vnpayment.vn/paymentv2/Payment/Error.html?code=70"));
         }
+    }
+
+    @GetMapping("done")
+    public List<OrderResponse> getAllOrderDone(){
+        return orderService.listOrder();
     }
 
     @GetMapping("{userid}")

@@ -188,4 +188,9 @@ public class OrderServiceImpls implements OrderService {
         });
         return order;
     }
+
+    @Override
+    public List<OrderResponse> listOrder() {
+        return orderRepository.findAll().stream().map(order -> new OrderResponse(order)).toList();
+    }
 }

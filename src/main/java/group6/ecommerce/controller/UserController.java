@@ -1,14 +1,18 @@
 package group6.ecommerce.controller;
 
 
+import group6.ecommerce.model.Role;
 import group6.ecommerce.model.Users;
 import group6.ecommerce.payload.request.ChangePasswordRequest;
 import group6.ecommerce.payload.request.UserInfoRequest;
 import group6.ecommerce.payload.response.HttpResponse;
 import group6.ecommerce.payload.response.UserDetailsResponse;
+import group6.ecommerce.payload.response.roleRespone;
 import group6.ecommerce.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import group6.ecommerce.payload.request.LoginRequest;
@@ -84,6 +88,15 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HttpResponse(HttpStatus.BAD_REQUEST.value(),
                     "Update failed",null));
         }
+    }
+
+    @GetMapping ("authorization")
+    public ResponseEntity<roleRespone> getRoleUset (){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Users principal = (Users) authentication.getPrincipal();
+        Users userLogin = userService.findById(principal.getId());
+        roleRespone role = new roleRespone(userLogin.getEmail(),userLogin.getRole().getRoleName());
+        return ResponseEntity.status(HttpStatus.OK).body(role);
     }
 
 }

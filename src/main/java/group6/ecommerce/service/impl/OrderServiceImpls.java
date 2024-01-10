@@ -3,10 +3,7 @@ package group6.ecommerce.service.impl;
 import group6.ecommerce.Repository.CartDetailsRepository;
 import group6.ecommerce.Repository.OrderDetailsRepository;
 import group6.ecommerce.Repository.OrderRepository;
-import group6.ecommerce.model.Order;
-import group6.ecommerce.model.Order_Details;
-import group6.ecommerce.model.Product;
-import group6.ecommerce.model.ProductDetails;
+import group6.ecommerce.model.*;
 
 import group6.ecommerce.payload.response.OrderResponse;
 import group6.ecommerce.payload.response.PaginationResponse;
@@ -25,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 
@@ -181,9 +179,9 @@ public class OrderServiceImpls implements OrderService {
     }
 
     @Override
-    public List<OrderResponse> findOrderByUserId(int userId) {
+    public List<OrderResponse> findOrderByUserId(Users userId) {
         List<OrderResponse> order = new ArrayList<>();
-        orderRepository.findOrderByUserId(userId).stream().forEach(item -> {
+        userId.getListOrder().stream().forEach(item -> {
             order.add(new OrderResponse(item));
         });
         return order;

@@ -156,8 +156,11 @@ public class OrderController {
         return orderService.listOrder();
     }
 
-    @GetMapping("{userid}")
-    public List<OrderResponse> findOrdersByUserId(@PathVariable("userid") int userid){
-        return orderService.findOrderByUserId(userid);
+    @GetMapping("myorder")
+    public List<OrderResponse> findOrdersByUserId(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Users principal = (Users) authentication.getPrincipal();
+        Users userLogin = userService.findById(principal.getId());
+        return orderService.findOrderByUserId(userLogin);
     }
 }

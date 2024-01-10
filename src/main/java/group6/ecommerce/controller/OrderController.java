@@ -5,6 +5,7 @@ import group6.ecommerce.model.Order;
 import group6.ecommerce.model.Users;
 import group6.ecommerce.payload.request.OrderRequest;
 import group6.ecommerce.payload.response.HttpResponse;
+import group6.ecommerce.payload.response.OrderResponse;
 import group6.ecommerce.payload.response.CheckOutRespone;
 import group6.ecommerce.service.OrderService;
 import group6.ecommerce.service.ProductDetailsService;
@@ -18,8 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -47,14 +46,13 @@ public class OrderController {
     }
 
     @PutMapping("updateStatus/{orderId}/{newStatus}")
-    public ResponseEntity<String> updateStatus(@PathVariable int orderId, @PathVariable String newStatus) {
+    public ResponseEntity<String> updateStatus(@PathVariable("orderId") int orderId, @PathVariable("newStatus") String newStatus) {
         String result = orderService.updateStatus(orderId, newStatus);
         if (result.equalsIgnoreCase("Updated Successfully")) {
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }else{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
-
     }
 
     @GetMapping
@@ -147,5 +145,11 @@ public class OrderController {
         } else {
             return "redirect:https://sandbox.vnpayment.vn/paymentv2/Payment/Error.html?code=70";
         }
+    }
+
+
+    @GetMapping("done")
+    public List<OrderResponse> getAllOrderDone(){
+        return orderService.listOrder();
     }
 }

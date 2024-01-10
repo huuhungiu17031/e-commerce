@@ -1,6 +1,5 @@
 package group6.ecommerce.controller;
 
-
 import group6.ecommerce.model.Users;
 import group6.ecommerce.payload.request.ChangePasswordRequest;
 import group6.ecommerce.payload.request.UserInfoRequest;
@@ -35,40 +34,28 @@ public class UserController {
     }
 
     @PostMapping("forgetPassword/{email}")
-    public ResponseEntity<String> forgetPassword(@PathVariable String email){
+    public ResponseEntity<String> forgetPassword(@PathVariable String email) {
         Users users = userService.findByEmail(email);
-        if(users != null){
-            emailService.SendEmailTo(email, users.getPassword());
-            return ResponseEntity.status(HttpStatus.OK).body("Password was sent to your email");
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong email");
-        }
+        emailService.SendEmailTo(email, users.getPassword());
+        return ResponseEntity.status(HttpStatus.OK).body("Password was sent to your email");
     }
 
     @PostMapping("changePassword")
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
         Boolean changePassword = userService.changePassword(changePasswordRequest);
-        if(changePassword){
+        if (changePassword) {
             return ResponseEntity.status(HttpStatus.OK).body("Change password successfully");
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.OK).body("Wrong old password or the new password and confirm password do not match");
+        } else {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("Wrong old password or the new password and confirm password do not match");
         }
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<String> update(@PathVariable("id") int id, @RequestBody UserInfoRequest userInfoRequest){
-        try{
-            Users user = userService.findById(id);
-            if(user == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
-            }
-            userService.update(id, userInfoRequest);
-            return ResponseEntity.status(HttpStatus.OK).body("Update successfully");
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Update failed");
-        }
+    public ResponseEntity<String> update(@PathVariable("id") int id, @RequestBody UserInfoRequest userInfoRequest) {
+        Users user = userService.findById(id);
+        userService.update(id, userInfoRequest);
+        return ResponseEntity.status(HttpStatus.OK).body("Update successfully");
     }
 
 }

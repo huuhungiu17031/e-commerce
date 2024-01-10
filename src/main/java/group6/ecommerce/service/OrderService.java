@@ -1,8 +1,11 @@
 package group6.ecommerce.service;
 
+import java.util.List;
+
 import group6.ecommerce.model.Order;
 import group6.ecommerce.payload.response.PaginationResponse;
 import group6.ecommerce.payload.response.CheckOutRespone;
+import group6.ecommerce.payload.response.OrderResponse;
 
 public interface OrderService {
 
@@ -18,4 +21,5 @@ public interface OrderService {
 
     public Order save (Order order);
 
+    List<OrderResponse> listOrder();
 }

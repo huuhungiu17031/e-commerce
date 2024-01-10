@@ -50,7 +50,6 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(HttpMethod.POST, "/product/**").hasAnyRole(Constant.ROLE_ADMIN)
                         .requestMatchers("/coupon/**").hasRole(Constant.ROLE_ADMIN)
                         .requestMatchers(HttpMethod.POST, "/product/**").hasRole(Constant.ROLE_ADMIN)
                         .anyRequest().permitAll())
